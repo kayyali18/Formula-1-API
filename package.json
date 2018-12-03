@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/kayyali18/node-backend-server/issues"
   },
-  "homepage": "https://github.com/kayyali18/node-backend-server#readme"
+  "homepage": "https://github.com/kayyali18/node-backend-server#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3"
+  }
 }
