@@ -1,0 +1,22 @@
+{
+  "name": "server-node",
+  "version": "1.0.0",
+  "description": "A back-end server built using node",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kayyali18/node-backend-server.git"
+  },
+  "author": "Kevin Simpson, Ahmad Kayyali",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kayyali18/node-backend-server/issues"
+  },
+  "homepage": "https://github.com/kayyali18/node-backend-server#readme",
+  "dependencies": {
+    "nightmare": "^3.0.1"
+  }
+}
