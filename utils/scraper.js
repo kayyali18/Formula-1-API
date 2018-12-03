@@ -5,8 +5,7 @@ var cleaner = require("./dataCleaner.js");
 
 nightmare
   .viewport(1024, 1500)
-  .goto("https://www.formula1.com/en.html")
-  .click('a[href="/en/drivers.html"]')
+  .goto("https://www.formula1.com/en/drivers.html")
   .evaluate(() => {
     let names = document.querySelectorAll("td.name");
     let teams = document.querySelectorAll("td.team");
@@ -22,7 +21,6 @@ nightmare
   })
   .end()
   .then(result => {
-    console.log(result);
     let cleaned = cleaner(result[0], result[1], result[2]);
     console.log(cleaned);
   })
