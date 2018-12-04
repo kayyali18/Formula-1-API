@@ -225,12 +225,29 @@ describe("Server file", () => {
   });
 
   describe("Team endpoints", () => {
-    it("should add a new team", done => {
+    it("should get all teams", done => {
       const newTeam = {
         name: "Toyota",
-        standing: "",
-        podiumFinishes: ""
+        podiums: 2,
+        titles: 3
       };
+
+      app.locals.teams = [newTeam];
+
+      chai
+        .request(app)
+        .get("/api/v1/teams")
+        .end((error, response) => {
+          expect(response).to.have.status(200);
+          expect(response.body).to.deep.equal([newTeam]);
+          console.log(response.body);
+          done();
+          app.locals.teams = [];
+        });
+    });
+
+    describe("api/v1/teams/:team_id/standing", () => {
+      it("should update team standing", done => {});
     });
   });
 });

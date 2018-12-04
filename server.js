@@ -171,16 +171,16 @@ app.delete("/api/v1/drivers/:driver_id", (request, response) => {
 
 // -- TEAMS -- //
 
-app.get("api/v1/teams", (request, response) => {
-  // requires - valid param
-  database("teams")
-    .select()
-    .then(teams => {
-      response.status(200).json(teams);
-    })
-    .catch(error => {
-      response.status(500).json({ error });
-    });
+app.get("/api/v1/teams", (request, response) => {
+  return response.status(200).json(app.locals.teams);
+  // database("teams")
+  //   .select()
+  //   .then(teams => {
+  //     response.status(200).json(teams);
+  //   })
+  //   .catch(error => {
+  //     response.status(500).json({ error });
+  //   });
 });
 
 app.patch("api/v1/teams/:team_id/standing", (request, response) => {
