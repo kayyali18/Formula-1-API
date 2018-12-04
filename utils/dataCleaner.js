@@ -1,25 +1,47 @@
-function cleaner(names, teams, points) {
-  let cleaned = names.reduce((acc, curr) => {
-    let obj = {
-      name: curr,
-      team: teams[acc.length],
-      points: points[acc.length]
+function driverCleaner(info) {
+  let cleaned = info.reduce((acc, driver, index) => {
+    let name = driver[1];
+    acc[name] = {
+      driver_id: driver[0],
+      points: driver[driver.length - 1],
+      nationality: driver[2],
+      team_id: "foreign_id"
     };
 
-    acc.push(obj);
     return acc;
-  }, []);
+  }, {});
 
   return cleaned;
 }
 
-function readify(names, teams, points) {
-  names = [].slice.call(names);
-  teams = [].slice.call(teams);
-  points = [].slice.call(points);
-  names = names.map(node => node.innerText);
-  teams = teams.map(node => node.innerText);
-  points = points.map(node => node.innerText);
+function teamCleaner(teams, stats) {
+  teams = teams.reduce((acc, team, index) => {
+    let myIndex = index * 2;
+    let name;
+
+    if (team.length == 8) {
+      name = team[0];
+
+      acc[name] = {
+        drivers: [`${team[3]} ${team[4]}`, `${team[5]} ${team[6]}`],
+        podiums: stats[myIndex],
+        titles: stats[myIndex + 1]
+      };
+    } else {
+      name = `${team[0]} ${team[1]}`;
+
+      acc[name] = {
+        drivers: [`${team[4]} ${team[5]}`, `${team[6]} ${team[7]}`],
+        podiums: stats[myIndex],
+        titles: stats[myIndex + 1]
+      };
+    }
+
+    return acc;
+  }, {});
+
+  return teams;
 }
 
-module.exports = cleaner;
+module.exports.driverCleaner = driverCleaner;
+module.exports.teamCleaner = teamCleaner;
