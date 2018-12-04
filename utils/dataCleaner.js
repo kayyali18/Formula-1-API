@@ -11,7 +11,7 @@ function driverCleaner(info) {
     return acc;
   }, {});
 
-  return cleaned;
+  return JSON.stringify(cleaned);
 }
 
 function teamCleaner(teams, stats) {
@@ -40,7 +40,7 @@ function teamCleaner(teams, stats) {
     return acc;
   }, {});
 
-  return teams;
+  return JSON.stringify(teams);
 }
 
 module.exports.driverCleaner = driverCleaner;

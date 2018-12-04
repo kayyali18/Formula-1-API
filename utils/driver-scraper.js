@@ -1,5 +1,6 @@
 const Nightmare = require("nightmare");
 const nightmare = Nightmare({ show: true });
+const fs = require("fs");
 
 var cleaner = require("./dataCleaner.js").driverCleaner;
 
@@ -20,6 +21,9 @@ nightmare
   .then(result => {
     console.log(result);
     let cleaned = cleaner(result);
-    console.log(cleaned);
+    fs.writeFileSync("./utils/data/drivers.txt", cleaned, err => {
+      if (err) throw err;
+      console.log("file saved");
+    });
   })
   .catch(error => console.error("Here is your error", error));

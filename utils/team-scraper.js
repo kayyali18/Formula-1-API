@@ -1,5 +1,6 @@
 const Nightmare = require("nightmare");
 const nightmare = Nightmare({ show: true });
+const fs = require("fs");
 
 var cleaner = require("./dataCleaner.js").teamCleaner;
 
@@ -23,6 +24,9 @@ nightmare
   .end()
   .then(result => {
     let cleaned = cleaner(result[0], result[1]);
-    console.log(cleaned);
+    fs.writeFileSync("./utils/data/teams.txt", cleaned, err => {
+      if (err) throw err;
+      console.log("file saved");
+    });
   })
   .catch(error => console.error("Your errror is:", error));
