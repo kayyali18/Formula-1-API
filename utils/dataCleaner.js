@@ -13,20 +13,6 @@ function driverCleaner(info) {
 
   return cleaned;
 }
-// function driverCleaner(names, teams, points) {
-//   let cleaned = names.reduce((acc, curr) => {
-//     let obj = {
-//       name: curr,
-//       team: teams[acc.length],
-//       points: points[acc.length]
-//     };
-
-//     acc.push(obj);
-//     return acc;
-//   }, []);
-
-//   return cleaned;
-// }
 
 function teamCleaner(teams, stats) {
   teams = teams.reduce((acc, team, index) => {

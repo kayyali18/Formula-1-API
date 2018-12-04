@@ -4,27 +4,22 @@ const nightmare = Nightmare({ show: true });
 var cleaner = require("./dataCleaner.js").driverCleaner;
 
 nightmare
-  .viewport(1024, 1500)
-  .goto("https://www.formula1.com/en/drivers.html")
+  .viewport(1024, 1600)
+  .goto("https://www.formula1.com/en/results.html/2018/drivers.html")
   .evaluate(() => {
-    let names = document.querySelectorAll("td.name");
-    let teams = document.querySelectorAll("td.team");
-    let points = document.querySelectorAll("td.points");
-    let countries = document.querySelectorAll("td.county");
-    names = [].slice.call(names);
-    teams = [].slice.call(teams);
-    points = [].slice.call(points);
-    countries = [].slice.call(countries);
-    names = names.map(node => node.innerText);
-    teams = teams.map(node => node.innerText);
-    points = points.map(node => node.innerText);
-    countries = countries.map(node => node.innerText);
+    let info = document.querySelectorAll("tbody tr");
+    info = [].slice.call(info);
 
-    return [names, teams, points, countries];
+    info = info.map(driver =>
+      driver.innerText.replace(/\t|\r/g, " ").split(" ")
+    );
+
+    return info;
   })
   .end()
   .then(result => {
-    let cleaned = cleaner(result[0], result[1], result[2], result[3]);
+    console.log(result);
+    let cleaned = cleaner(result);
     console.log(cleaned);
   })
   .catch(error => console.error("Here is your error", error));
