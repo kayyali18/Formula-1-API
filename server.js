@@ -7,6 +7,7 @@ const app = express();
 
 app.locals.title = "BYOBE Database";
 app.locals.drivers = [];
+app.locals.teams = [];
 
 app.use(bodyParser.json());
 app.use(express.static("public"));
@@ -54,10 +55,11 @@ app.patch("/api/v1/drivers/:driver_id/points", (request, response) => {
   const { driver_id } = request.params;
   const { points } = request.body;
 
+  if (!points) return response.status(422).send("Unprocessable entity");
+
   const driver = app.locals.drivers.find(driver => {
     return driver.id === driver_id;
   });
-  console.log(driver);
 
   if (!driver) {
     return response.status(404).send("Driver not found");
@@ -141,22 +143,30 @@ app.post("/api/v1/team/:team_id/drivers", (request, response) => {
   //   });
 });
 
-app.delete("api/v1/drivers/:driver_id", (request, response) => {
+app.delete("/api/v1/drivers/:driver_id", (request, response) => {
   const { driver_id } = request.params;
 
-  if (typeof driver_id !== "number") {
-    response.status(422).send("unprocessable entity");
-  }
+  const driver = app.locals.drivers.find(driver => {
+    return driver.id === driver_id;
+  });
 
-  database("drivers")
-    .where(driver_id, id)
-    .del()
-    .then(driver => {
-      response.status(201).json(`Succesfully deleted ${driver}`);
-    })
-    .catch(error => {
-      response.status(500).json({ error: error.message });
-    });
+  if (!driver) return response.status(404).send("Driver not found");
+
+  app.locals.drivers = app.locals.drivers.filter(driver => {
+    return driver.id !== driver_id;
+  });
+
+  return response.status(201).send(`Delete driver ${driver}`);
+
+  // database("drivers")
+  //   .where(driver_id, id)
+  //   .del()
+  //   .then(driver => {
+  //     response.status(201).json(`Succesfully deleted ${driver}`);
+  //   })
+  //   .catch(error => {
+  //     response.status(500).json({ error: error.message });
+  //   });
 });
 
 // -- TEAMS -- //
