@@ -31,7 +31,7 @@ app.get("api/v1/drivers/:driver_name", (request, response) => {
   // requires - valid param
   const { driver_name } = request.params;
 
-  if (typeof driver.team_id !== "string") {
+  if (typeof driver_name !== "string") {
     response.status(422).send("unprocessable entity");
   }
 
@@ -54,7 +54,7 @@ app.patch("api/v1/drivers/:driver_id/points", (request, response) => {
   const { driver_id } = request.params;
   const points = request.body;
 
-  if (typeof driver.team_id !== "number") {
+  if (typeof driver_id !== "number") {
     response.status(422).send("unprocessable entity");
   }
 
@@ -73,51 +73,64 @@ app.patch("api/v1/drivers/:driver_id/points", (request, response) => {
     });
 });
 
-app.patch("api/v1/drivers/:driver_id/team", (request, response) => {
+app.patch("/api/v1/drivers/:driver_id/team", (request, response) => {
   const { driver_id } = request.params;
-  const team = request.body;
+  const { team_id } = request.body;
 
-  if (typeof driver.team_id !== "number") {
-    response.status(422).send("unprocessable entity");
+  if (typeof driver_id !== "string") {
+    return response.status(422).send("unprocessable entity");
   }
 
-  database("drivers")
-    .where(driver_id, "id")
-    .update({ team })
-    .then(driver => {
-      if (driver) {
-        response.status(200).json(driver);
-      } else {
-        response.status(404).json({ error });
-      }
-    })
-    .catch(error => {
-      response.status(500).json({ error });
-    });
-  // requires - valid param, body
+  const driver = app.locals.drivers.find(driver => driver.id == driver_id);
+  console.log("driver", driver);
+
+  if (!driver) {
+    return response.status(404).send("Driver not found");
+  }
+
+  driver.team_id = team_id;
+
+  return response.status(201).json(driver.team);
+
+  // database("drivers")
+  //   .where(driver_id, "id")
+  //   .update({ team })
+  //   .then(driver => {
+  //     if (driver) {
+  //       response.status(200).json(driver);
+  //     } else {
+  //       response.status(404).json({ error });
+  //     }
+  //   })
+  //   .catch(error => {
+  //     response.status(500).json({ error });
+  //   });
+  // // requires - valid param, body
 });
 
-app.post("api/v1/team/:team_id/drivers", (request, response) => {
-  const driver = { ...response.body, team_id: request.params.team_id };
+app.post("/api/v1/team/:team_id/drivers", (request, response) => {
+  const driver = { ...request.body, team_id: request.params.team_id };
 
-  if (typeof driver.team_id !== "number") {
-    response.status(422).send("unprocessable entity");
-  }
-
-  for (let requiredParam of ["name", "country"]) {
+  for (let requiredParam of ["name", "country", "team_id"]) {
     if (!driver[requiredParam]) {
-      response.status(422).json({ error: `Missing ${requiredParam}` });
+      return response.status(422).json({ error: `Missing ${requiredParam}` });
     }
   }
 
-  database("drivers")
-    .insert(driver, "id")
-    .then(driver_id => {
-      response.status(201).json({ id: driver_id });
-    })
-    .catch(error => {
-      response.status(500).json({ error: error.message });
-    });
+  app.locals.drivers = [...app.locals.drivers, driver];
+
+  return response
+    .status(201)
+    .json({ message: `succesfully added ${driver.name}` });
+
+  // database("drivers")
+  //   .insert(driver, "id")
+  //   .then(driver_id => {
+  //     response.status(201).json({ id: driver_id });
+  //   })
+  //   .catch(error => {
+  //     response.status(500).json({ error: error.message });
+  //   });
 });
 
 app.delete("api/v1/drivers/:driver_id", (request, response) => {

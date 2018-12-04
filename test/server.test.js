@@ -16,4 +16,64 @@ describe("Server file", () => {
         })
     ]);
   });
+
+  it("should post a new driver", done => {
+    const body = { name: "Kevin", country: "USA" };
+    const expected = [{ ...body, team_id: "1" }];
+    chai
+      .request(app)
+      .post("/api/v1/team/1/drivers")
+      .send(body)
+      .end((error, response) => {
+        expect(response).to.have.status(201);
+        expect(app.locals.drivers).to.deep.equal(expected);
+        app.locals.drivers = [];
+        done();
+      });
+  });
+
+  it("should patch team", done => {
+    const driver = {
+      id: 7,
+      name: " kimi",
+      team_id: "Ferrari",
+      country: "Finland"
+    };
+    const body = { team_id: "Sauber" };
+    const expected = [{ ...driver, team_id: "Sauber" }];
+    app.locals.drivers = [driver];
+    chai
+      .request(app)
+      .patch("/api/v1/drivers/7/team")
+      .send(body)
+      .end((error, response) => {
+        expect(response).to.have.status(201);
+        expect(app.locals.drivers).to.deep.equal(expected);
+        done();
+        app.locals.drivers = [];
+      });
+  });
+
+  it("should return 404 if the driver does not exist", done => {
+    const driver = {
+      id: 7,
+      name: "Kimi",
+      team_id: "Ferrari",
+      country: "Finland"
+    };
+
+    const body = { team_id: "Sauber" };
+
+    app.locals.drivers = [driver];
+
+    chai
+      .request(app)
+      .patch("/api/v1/drivers/1/team")
+      .send(body)
+      .end((error, response) => {
+        expect(response).to.have.status(404);
+        done();
+      });
+    app.locals.drivers = [];
+  });
 });
