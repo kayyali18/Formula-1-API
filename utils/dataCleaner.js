@@ -22,15 +22,15 @@ function teamCleaner(teams, stats) {
       name = team[0];
 
       acc[name] = {
-        drivers: [team[3] + team[4], team[5] + team[6]],
+        drivers: [`${team[3]} ${team[4]}`, `${team[5]} ${team[6]}`],
         podiums: stats[myIndex],
         titles: stats[myIndex + 1]
       };
     } else {
-      name = team[0] + team[1];
+      name = `${team[0]} ${team[1]}`;
 
       acc[name] = {
-        drivers: [team[4] + team[5], team[6] + team[7]],
+        drivers: [`${team[4]} ${team[5]}`, `${team[6]} ${team[7]}`],
         podiums: stats[myIndex],
         titles: stats[myIndex + 1]
       };
