@@ -50,27 +50,35 @@ app.get("api/v1/drivers/:driver_name", (request, response) => {
     });
 });
 
-app.patch("api/v1/drivers/:driver_id/points", (request, response) => {
+app.patch("/api/v1/drivers/:driver_id/points", (request, response) => {
   const { driver_id } = request.params;
-  const points = request.body;
+  const { points } = request.body;
 
-  if (typeof driver_id !== "number") {
-    response.status(422).send("unprocessable entity");
+  const driver = app.locals.drivers.find(driver => {
+    return (driver.id = driver_id);
+  });
+
+  if (!driver) {
+    return response.status(404).send("Driver not found");
   }
 
-  database("drivers")
-    .where(driver_id, "id")
-    .update({ points })
-    .then(driver => {
-      if (driver) {
-        response.status(200).json(driver);
-      } else {
-        response.status(404).json({ error });
-      }
-    })
-    .catch(error => {
-      response.status(500).json({ error });
-    });
+  driver.points = points;
+
+  return response.status(201).send("changed");
+
+  // database("drivers")
+  //   .where(driver_id, "id")
+  //   .update({ points })
+  //   .then(driver => {
+  //     if (driver) {
+  //       response.status(200).json(driver);
+  //     } else {
+  //       response.status(404).json({ error });
+  //     }
+  //   })
+  //   .catch(error => {
+  //     response.status(500).json({ error });
+  //   });
 });
 
 app.patch("/api/v1/drivers/:driver_id/team", (request, response) => {
