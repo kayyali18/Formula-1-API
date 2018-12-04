@@ -1,17 +1,32 @@
-function driverCleaner(names, teams, points) {
-  let cleaned = names.reduce((acc, curr) => {
-    let obj = {
-      name: curr,
-      team: teams[acc.length],
-      points: points[acc.length]
+function driverCleaner(info) {
+  let cleaned = info.reduce((acc, driver, index) => {
+    let name = driver[1];
+    acc[name] = {
+      driver_id: driver[0],
+      points: driver[driver.length - 1],
+      nationality: driver[2],
+      team_id: "foreign_id"
     };
 
-    acc.push(obj);
     return acc;
-  }, []);
+  }, {});
 
   return cleaned;
 }
+// function driverCleaner(names, teams, points) {
+//   let cleaned = names.reduce((acc, curr) => {
+//     let obj = {
+//       name: curr,
+//       team: teams[acc.length],
+//       points: points[acc.length]
+//     };
+
+//     acc.push(obj);
+//     return acc;
+//   }, []);
+
+//   return cleaned;
+// }
 
 function teamCleaner(teams, stats) {
   teams = teams.reduce((acc, team, index) => {
