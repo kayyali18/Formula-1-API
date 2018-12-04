@@ -77,12 +77,11 @@ app.patch("/api/v1/drivers/:driver_id/team", (request, response) => {
   const { driver_id } = request.params;
   const { team_id } = request.body;
 
-  if (typeof driver_id !== "string") {
-    return response.status(422).send("unprocessable entity");
-  }
-
   const driver = app.locals.drivers.find(driver => driver.id == driver_id);
-  console.log("driver", driver);
+
+  if (typeof team_id !== "string") {
+    return response.status(422).send(`${team_id} is not a string`);
+  }
 
   if (!driver) {
     return response.status(404).send("Driver not found");

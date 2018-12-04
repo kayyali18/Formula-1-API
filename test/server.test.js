@@ -73,7 +73,30 @@ describe("Server file", () => {
       .end((error, response) => {
         expect(response).to.have.status(404);
         done();
+        app.locals.drivers = [];
       });
-    app.locals.drivers = [];
+  });
+
+  it("should return 422 if the team_id is not a string", done => {
+    const driver = {
+      id: 7,
+      name: "Kimi",
+      team_id: "Ferrari",
+      country: "Finland"
+    };
+
+    const body = { team_id: 1 };
+
+    app.locals.drivers = [driver];
+
+    chai
+      .request(app)
+      .patch("/api/v1/drivers/hello/team")
+      .send(body)
+      .end((error, response) => {
+        expect(response).to.have.status(422);
+        done();
+        app.locals.drivers = [];
+      });
   });
 });
