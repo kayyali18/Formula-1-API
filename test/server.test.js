@@ -128,6 +128,30 @@ describe("Server file", () => {
             app.locals.driver = [];
           });
       });
+
+      it("should return 404 if the driver is not found", done => {
+        const driver = {
+          id: "4",
+          name: "Steve",
+          team_id: "Mclaren",
+          country: "UK",
+          points: 80
+        };
+
+        const body = { points: 89 };
+
+        app.locals.drivers = [driver];
+
+        chai
+          .request(app)
+          .patch("/api/v1/drivers/10/points")
+          .send(body)
+          .end((error, response) => {
+            expect(response).to.have.status(404);
+            done();
+            app.locals.driver = [];
+          });
+      });
     });
   });
 });

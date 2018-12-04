@@ -55,8 +55,9 @@ app.patch("/api/v1/drivers/:driver_id/points", (request, response) => {
   const { points } = request.body;
 
   const driver = app.locals.drivers.find(driver => {
-    return (driver.id = driver_id);
+    return driver.id === driver_id;
   });
+  console.log(driver);
 
   if (!driver) {
     return response.status(404).send("Driver not found");
