@@ -214,24 +214,35 @@ app.patch("/api/v1/teams/:team_id/podiums", (request, response) => {
   //   });
 });
 
-app.patch("api/v1/teams/:team_id/titles", (request, response) => {
-  const team = { ...response.body, team_id: request.params.team_id };
+app.patch("/api/v1/teams/:team_id/titles", (request, response) => {
+  const { titles } = request.body;
+  const { team_id } = request.params;
 
-  for (let requiredParam of [titles, team_id]) {
-    if (!team[requiredParam]) {
-      response.status(244).send("unprocessable entity");
-    }
+  if (!titles) {
+    return response.status(244).send("Unprocessable entity");
   }
 
-  database("teams")
-    .where(team_id, "id")
-    .update({ titles })
-    .then(() => {
-      response.status(201).send("success");
-    })
-    .catch(error => {
-      response.status(500).json({ error });
-    });
+  const teamToUpdate = app.locals.teams.find(team => {
+    return team.name === team_id;
+  });
+
+  if (!teamToUpdate) {
+    return response.status(404).send("Team not found");
+  }
+
+  teamToUpdate.titles = titles;
+
+  return response.status(201).send(`Updated ${team_id} titles to ${titles}`);
+
+  // database("teams")
+  //   .where(team_id, "id")
+  //   .update({ titles })
+  //   .then(() => {
+  //     response.status(201).send("success");
+  //   })
+  //   .catch(error => {
+  //     response.status(500).json({ error });
+  //   });
 });
 
 app.post("api/v1/teams", (request, response) => {

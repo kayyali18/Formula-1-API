@@ -27,7 +27,7 @@ describe("Server file", () => {
         .send(body)
         .end((error, response) => {
           expect(response).to.have.status(201);
-          expect(app.locals.drivers).to.deep.equal(expected);
+          expect(app.locals.drivers).to.deep.equal(expected); //THIS SHOULD EVALUATE THE RESPONSE OBJECT
           app.locals.drivers = [];
           done();
         });
@@ -50,7 +50,7 @@ describe("Server file", () => {
           .send(body)
           .end((error, response) => {
             expect(response).to.have.status(201);
-            expect(app.locals.drivers).to.deep.equal(expected);
+            expect(app.locals.drivers).to.deep.equal(expected); //THIS SHOULD EVALUATE THE RESPONSE OBJECT
             done();
             app.locals.drivers = [];
           });
@@ -124,7 +124,7 @@ describe("Server file", () => {
             .send(body)
             .end((error, response) => {
               expect(response).to.have.status(201);
-              expect(app.locals.drivers).to.deep.equal(expected);
+              expect(app.locals.drivers).to.deep.equal(expected); //THIS SHOULD EVALUATE THE RESPONSE OBJECT
               done();
               app.locals.driver = [];
             });
@@ -216,7 +216,7 @@ describe("Server file", () => {
             .delete("/api/v1/driver/14")
             .end((error, response) => {
               expect(response).to.have.status(404);
-              expect(app.locals.drivers).to.deep.equal([driver]);
+              expect(app.locals.drivers).to.deep.equal([driver]); //THIS SHOULD EVALUATE THE RESPONSE OBJECT
               done();
             });
         });
@@ -239,7 +239,7 @@ describe("Server file", () => {
         .get("/api/v1/teams")
         .end((error, response) => {
           expect(response).to.have.status(200);
-          expect(response.body).to.deep.equal([newTeam]);
+          expect(response.body).to.deep.equal([newTeam]); //THIS SHOULD EVALUATE THE RESPONSE OBJECT
           done();
           app.locals.teams = [];
         });
@@ -265,7 +265,7 @@ describe("Server file", () => {
           .send(body)
           .end((error, response) => {
             expect(response).to.have.status(201);
-            expect(app.locals.teams).to.deep.equal(expected);
+            expect(app.locals.teams).to.deep.equal(expected); //THIS SHOULD EVALUATE THE RESPONSE OBJECT
             done();
             app.locals.teams = [];
           });
@@ -310,6 +310,77 @@ describe("Server file", () => {
           .send(body)
           .end((error, response) => {
             expect(response).to.have.status(404);
+            done();
+            app.locals.teams = [];
+          });
+      });
+    });
+
+    describe("api/v1/teams/:team_id/titles", () => {
+      it("should update team titles", done => {
+        const team = {
+          name: "Toyota",
+          podiums: 2,
+          titles: 3
+        };
+
+        const body = { titles: 3 };
+
+        app.locals.teams = [team];
+
+        chai
+          .request(app)
+          .patch("/api/v1/teams/Toyota/titles")
+          .send(body)
+          .end((error, response) => {
+            expect(response).to.have.status(201);
+
+            done();
+            app.locals.teams = [];
+          });
+      });
+
+      it("should return 244 if missing titles", done => {
+        const team = {
+          name: "Toyota",
+          podiums: 2,
+          titles: 3
+        };
+
+        const body = { pants: 3 };
+
+        app.locals.teams = [team];
+
+        chai
+          .request(app)
+          .patch("/api/v1/teams/Toyota/titles")
+          .send(body)
+          .end((error, response) => {
+            expect(response).to.have.status(244);
+
+            done();
+            app.locals.teams = [];
+          });
+      });
+
+      it("should return 404 if team does not exist", done => {
+        const team = {
+          name: "Toyota",
+          podiums: 2,
+          titles: 3
+        };
+
+        const body = { titles: 4 };
+
+        app.locals.teams = [team];
+
+        chai
+          .request(app)
+          .patch("/api/v1/teams/Ford/titles")
+          .send(body)
+          .end((error, response) => {
+            expect(response).to.have.status(404);
+
             done();
             app.locals.teams = [];
           });
