@@ -151,23 +151,101 @@ app.get("api/v1/teams", (request, response) => {
 });
 
 app.patch("api/v1/teams/:team_id/standing", (request, response) => {
-  // requires - valid param
+  const team = { ...response.body, team_id: request.params.team_id };
+
+  for (let requiredParam of [standing, team_id]) {
+    if (!team[requiredParam]) {
+      response.status(244).send("unprocessable entity");
+    }
+  }
+
+  database("teams")
+    .where(team_id, "id")
+    .update({ standing })
+    .then(() => {
+      response.status(201).send("success");
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
 });
 
 app.patch("api/v1/teams/:team_id/podium_finishes", (request, response) => {
-  // requires - valid param
+  const team = { ...response.body, team_id: request.params.team_id };
+
+  for (let requiredParam of [podium_finishes, team_id]) {
+    if (!team[requiredParam]) {
+      response.status(244).send("unprocessable entity");
+    }
+  }
+
+  database("teams")
+    .where(team_id, "id")
+    .update({ podium_finishes })
+    .then(() => {
+      response.status(201).send("success");
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
 });
 
 app.patch("api/v1/teams/:team_id/titles", (request, response) => {
-  // requires - valid param
+  const team = { ...response.body, team_id: request.params.team_id };
+
+  for (let requiredParam of [titles, team_id]) {
+    if (!team[requiredParam]) {
+      response.status(244).send("unprocessable entity");
+    }
+  }
+
+  database("teams")
+    .where(team_id, "id")
+    .update({ titles })
+    .then(() => {
+      response.status(201).send("success");
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
 });
 
 app.post("api/v1/teams", (request, response) => {
+  const team = response.body;
+
+  for (let requiredParam of [name, standing, podium_finishes, titles]) {
+    if (!team[requiredParam]) {
+      response.status(244).send("unprocessable entity");
+    }
+  }
+
+  database("teams")
+    .insert(team, "id")
+    .then(newTeam => {
+      response.status(201).send(`Added ${newTeam} successfully`);
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
   // requires - name, standing, podium finishes, titles
 });
 
-app.delete("api/v1/teams/:team_id", (request, response) => {
-  // requires - valid param
+app.delete("api/v1/team/:team", (request, response) => {
+  const { team } = request.params;
+
+  if (typeof team !== "number") {
+    response.status(422).send("unprocessable entity");
+  }
+
+  database("teams")
+    .where(team_id, id)
+    .del()
+    .then(team => {
+      response.status(201).json(`Succesfully deleted ${team}`);
+    })
+    .catch(error => {
+      response.status(500).json({ error: error.message });
+    });
 });
 
 // -- RACES -- //
