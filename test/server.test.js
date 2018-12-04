@@ -386,5 +386,25 @@ describe("Server file", () => {
           });
       });
     });
+
+    describe("api/v1/teams - POST", () => {
+      it("should post a new team", done => {
+        const team = {
+          name: "Toyota"
+        };
+        const expected = "Added team Toyota";
+
+        chai
+          .request(app)
+          .post("/api/v1/teams")
+          .send(team)
+          .end((error, response) => {
+            expect(response).to.have.status(201);
+            expect(response.body).to.equal(expected);
+            done();
+            app.locals.teams = [];
+          });
+      });
+    });
   });
 });

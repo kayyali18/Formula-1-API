@@ -245,23 +245,33 @@ app.patch("/api/v1/teams/:team_id/titles", (request, response) => {
   //   });
 });
 
-app.post("api/v1/teams", (request, response) => {
-  const team = response.body;
+app.post("/api/v1/teams", (request, response) => {
+  const { name } = request.body;
 
-  for (let requiredParam of [name, standing, podium_finishes, titles]) {
-    if (!team[requiredParam]) {
-      response.status(244).send("unprocessable entity");
-    }
+  if (!name) {
+    return response.status(422).send("Unprocessable Entity - no team name");
   }
 
-  database("teams")
-    .insert(team, "id")
-    .then(newTeam => {
-      response.status(201).send(`Added ${newTeam} successfully`);
-    })
-    .catch(error => {
-      response.status(500).json({ error });
-    });
+  const newTeam = {
+    name,
+    podiums: 0,
+    titles: 0
+  };
+
+  console.log(newTeam);
+
+  app.locals.teams = [...app.locals.teams, newTeam];
+
+  return response.status(201).json(`Added team ${name}`);
+
+  // database("teams")
+  //   .insert(team, "id")
+  //   .then(newTeam => {
+  //     response.status(201).send(`Added ${newTeam} successfully`);
+  //   })
+  //   .catch(error => {
+  //     response.status(500).json({ error });
+  //   });
   // requires - name, standing, podium finishes, titles
 });
 
