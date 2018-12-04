@@ -13,7 +13,9 @@ nightmare
     // drivers = [].slice.call(drivers);
     teamInfo = [].slice.call(teamInfo);
     podiumsAndTitles = [].slice.call(podiumsAndTitles);
-    teamInfo = teamInfo.map(team => team.innerText);
+    teamInfo = teamInfo.map(team =>
+      team.innerText.replace(/\n|\r/g, " ").split(" ")
+    );
     podiumsAndTitles = podiumsAndTitles.map(stat => stat.innerText);
 
     return [teamInfo, podiumsAndTitles];
