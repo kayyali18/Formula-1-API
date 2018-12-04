@@ -188,7 +188,7 @@ app.patch("/api/v1/teams/:team_id/podiums", (request, response) => {
   const { team_id } = request.params;
 
   if (!podiums || !team_id) {
-    response.status(244).send("unprocessable entity");
+    return response.status(244).send("unprocessable entity");
   }
 
   const teamToUpdate = app.locals.teams.find(team => {

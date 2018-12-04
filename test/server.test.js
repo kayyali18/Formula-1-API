@@ -271,7 +271,49 @@ describe("Server file", () => {
           });
       });
 
-      it("should return a 244 error if missing params", body => {});
+      it("should return a 244 error if missing body params", done => {
+        const team = {
+          name: "Toyota",
+          podiums: 2,
+          titles: 3
+        };
+
+        const body = { name: "Test" };
+
+        app.locals.teams = [team];
+
+        chai
+          .request(app)
+          .patch("/api/v1/teams/Toyota/podiums")
+          .send(body)
+          .end((error, response) => {
+            expect(response).to.have.status(244);
+            done();
+            app.locals.teams = [];
+          });
+      });
+
+      it("should return 404 if no team is found", done => {
+        const team = {
+          name: "Toyota",
+          podiums: 2,
+          titles: 3
+        };
+
+        const body = { podiums: 4 };
+
+        app.locals.teams = [team];
+
+        chai
+          .request(app)
+          .patch("/api/v1/teams/Ford/podiums")
+          .send(body)
+          .end((error, response) => {
+            expect(response).to.have.status(404);
+            done();
+            app.locals.teams = [];
+          });
+      });
     });
   });
 });
