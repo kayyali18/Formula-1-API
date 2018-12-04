@@ -183,44 +183,35 @@ app.get("/api/v1/teams", (request, response) => {
   //   });
 });
 
-app.patch("api/v1/teams/:team_id/standing", (request, response) => {
-  const team = { ...response.body, team_id: request.params.team_id };
+app.patch("/api/v1/teams/:team_id/podiums", (request, response) => {
+  const { podiums } = request.body;
+  const { team_id } = request.params;
 
-  for (let requiredParam of [standing, team_id]) {
-    if (!team[requiredParam]) {
-      response.status(244).send("unprocessable entity");
-    }
+  if (!podiums || !team_id) {
+    response.status(244).send("unprocessable entity");
   }
 
-  database("teams")
-    .where(team_id, "id")
-    .update({ standing })
-    .then(() => {
-      response.status(201).send("success");
-    })
-    .catch(error => {
-      response.status(500).json({ error });
-    });
-});
+  const teamToUpdate = app.locals.teams.find(team => {
+    return team.name === team_id;
+  });
 
-app.patch("api/v1/teams/:team_id/podium_finishes", (request, response) => {
-  const team = { ...response.body, team_id: request.params.team_id };
-
-  for (let requiredParam of [podium_finishes, team_id]) {
-    if (!team[requiredParam]) {
-      response.status(244).send("unprocessable entity");
-    }
+  if (!teamToUpdate) {
+    return response.status(404).send("Team not found");
   }
 
-  database("teams")
-    .where(team_id, "id")
-    .update({ podium_finishes })
-    .then(() => {
-      response.status(201).send("success");
-    })
-    .catch(error => {
-      response.status(500).json({ error });
-    });
+  teamToUpdate.podiums = podiums;
+
+  return response.status(201).send("Success!");
+
+  // database("teams")
+  //   .where(team_id, "id")
+  //   .update({ podiums: team.podiums })
+  //   .then(() => {
+  //     response.status(201).send("success");
+  //   })
+  //   .catch(error => {
+  //     response.status(500).json({ error });
+  //   });
 });
 
 app.patch("api/v1/teams/:team_id/titles", (request, response) => {

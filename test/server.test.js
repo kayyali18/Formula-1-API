@@ -240,14 +240,38 @@ describe("Server file", () => {
         .end((error, response) => {
           expect(response).to.have.status(200);
           expect(response.body).to.deep.equal([newTeam]);
-          console.log(response.body);
           done();
           app.locals.teams = [];
         });
     });
 
-    describe("api/v1/teams/:team_id/standing", () => {
-      it("should update team standing", done => {});
+    describe("api/v1/teams/:team_id/podiums", () => {
+      it("should update team podiums", done => {
+        const team = {
+          name: "Toyota",
+          podiums: 2,
+          titles: 3
+        };
+
+        const body = { podiums: 3 };
+
+        const expected = [{ ...team, podiums: 3 }];
+
+        app.locals.teams = [team];
+
+        chai
+          .request(app)
+          .patch("/api/v1/teams/Toyota/podiums")
+          .send(body)
+          .end((error, response) => {
+            expect(response).to.have.status(201);
+            expect(app.locals.teams).to.deep.equal(expected);
+            done();
+            app.locals.teams = [];
+          });
+      });
+
+      it("should return a 244 error if missing params", body => {});
     });
   });
 });
