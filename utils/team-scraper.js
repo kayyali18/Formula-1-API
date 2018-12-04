@@ -7,14 +7,16 @@ nightmare
   .viewport(1024, 1500)
   .goto("https://www.formula1.com/en/teams.html")
   .evaluate(() => {
-    let drivers = document.querySelectorAll("li.teamteaser-driver");
+    // let drivers = document.querySelectorAll("li.teamteaser-driver");
+    let teamInfo = document.querySelectorAll("div.panel-left");
     let podiumsAndTitles = document.querySelectorAll("td.stat-value");
-    drivers = [].slice.call(drivers);
+    // drivers = [].slice.call(drivers);
+    teamInfo = [].slice.call(teamInfo);
     podiumsAndTitles = [].slice.call(podiumsAndTitles);
-    drivers = drivers.map(driver => driver.innerText);
+    teamInfo = teamInfo.map(team => team.innerText);
     podiumsAndTitles = podiumsAndTitles.map(stat => stat.innerText);
 
-    return [drivers, podiumsAndTitles];
+    return [teamInfo, podiumsAndTitles];
   })
   .end()
   .then(result => console.log(result))
