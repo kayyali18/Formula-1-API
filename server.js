@@ -6,6 +6,7 @@ const app = express();
 // const database = require("knex")(configuration);
 
 app.locals.title = "BYOBE Database";
+app.locals.drivers = [];
 
 app.use(bodyParser.json());
 app.use(express.static("public"));
@@ -15,14 +16,15 @@ app.set("port", process.env.PORT || 3000);
 // -- DRIVERS -- //
 
 app.get("/api/v1/drivers", (request, response) => {
-  database("drivers")
-    .select()
-    .then(drivers => {
-      response.status(200).json(drivers);
-    })
-    .catch(error => {
-      response.status(500).json({ error });
-    });
+  return response.status(200).json(app.locals.drivers);
+  // database("drivers")
+  //   .select()
+  //   .then(drivers => {
+  //     response.status(200).json(drivers);
+  //   })
+  //   .catch(error => {
+  //     response.status(500).json({ error });
+  //   });
 });
 
 app.get("api/v1/drivers/:driver_name", (request, response) => {
@@ -269,3 +271,5 @@ app.delete("api/v1/race/:race_id", (request, response) => {
 app.listen(app.get("port"), () => {
   console.log(`${app.locals.title} is running on ${app.get("port")}`);
 });
+
+module.exports = app;
