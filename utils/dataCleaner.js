@@ -11,7 +11,7 @@ function driverCleaner(info) {
     return acc;
   }, {});
 
-  return cleaned;
+  return JSON.stringify(cleaned, null, 4);
 }
 
 function teamCleaner(teams, stats) {
@@ -40,8 +40,26 @@ function teamCleaner(teams, stats) {
     return acc;
   }, {});
 
-  return teams;
+  return JSON.stringify(teams, null, 4);
+}
+
+function gpCleaner(GP) {
+  GP = GP.reduce((acc, race) => {
+    let country = race[0];
+    let date = race[1];
+    let winner = race[2];
+    let team = race[3];
+    let laps = race[4];
+    let fastLap = race[5];
+
+    acc[country] = { date, winner, team, laps, fastLap };
+    return acc;
+  }, {});
+
+  return JSON.stringify(GP, null, 4);
 }
 
 module.exports.driverCleaner = driverCleaner;
 module.exports.teamCleaner = teamCleaner;
+
+module.exports.gpCleaner = gpCleaner;
