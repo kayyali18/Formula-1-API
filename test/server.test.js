@@ -1,3 +1,5 @@
+process.env.NODE_ENV = "test";
+
 const chai = require("chai");
 const expect = chai.expect;
 const chaiHttp = require("chai-http");
@@ -36,18 +38,11 @@ describe("Server file", () => {
 
     describe("/api/v1/drivers/:driver_id/team", () => {
       it("should patch team", done => {
-        const driver = {
-          id: 7,
-          name: " kimi",
-          team_id: "Ferrari",
-          country: "Finland"
-        };
-        const body = { team_id: "Sauber" };
-        const expected = "Sauber";
-        app.locals.drivers = [driver];
+        const body = { team_id: 2 };
+        const expected = 2;
         chai
           .request(app)
-          .patch("/api/v1/drivers/7/team")
+          .patch("/api/v1/drivers/1/team")
           .send(body)
           .end((error, response) => {
             expect(response).to.have.status(201);
@@ -228,20 +223,12 @@ describe("Server file", () => {
 
   describe("Team endpoints", () => {
     it("should get all teams", done => {
-      const newTeam = {
-        name: "Toyota",
-        podiums: 2,
-        titles: 3
-      };
-
-      app.locals.teams = [newTeam];
-
       chai
         .request(app)
         .get("/api/v1/teams")
         .end((error, response) => {
           expect(response).to.have.status(200);
-          expect(response.body).to.deep.equal([newTeam]); //THIS SHOULD EVALUATE THE RESPONSE OBJECT
+          expect(response.body.length).to.equal(10); //THIS SHOULD EVALUATE THE RESPONSE OBJECT
           done();
           app.locals.teams = [];
         });
