@@ -1,9 +1,9 @@
 const bodyParser = require("body-parser");
 const express = require("express");
 const app = express();
-// const environment = process.env.NOD_ENV || "development";
-// const configuration = require("./knexfile")[environment];
-// const database = require("knex")(configuration);
+const environment = process.env.NOD_ENV || "development";
+const configuration = require("./knexfile")[environment];
+const database = require("knex")(configuration);
 
 app.locals.title = "BYOBE Database";
 app.locals.drivers = [];
@@ -17,15 +17,14 @@ app.set("port", process.env.PORT || 3000);
 // -- DRIVERS -- //
 
 app.get("/api/v1/drivers", (request, response) => {
-  return response.status(200).json(app.locals.drivers);
-  // database("drivers")
-  //   .select()
-  //   .then(drivers => {
-  //     response.status(200).json(drivers);
-  //   })
-  //   .catch(error => {
-  //     response.status(500).json({ error });
-  //   });
+  database("drivers")
+    .select()
+    .then(drivers => {
+      response.status(200).json(drivers);
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
 });
 
 app.patch("/api/v1/drivers/:driver_id/team", (request, response) => {
@@ -34,31 +33,26 @@ app.patch("/api/v1/drivers/:driver_id/team", (request, response) => {
 
   const driver = app.locals.drivers.find(driver => driver.id == driver_id);
 
-  if (typeof team_id !== "string") {
+  if (typeof team_id !== "number") {
     return response.status(422).json(`${team_id} is not a string`);
   }
 
   if (!driver) {
     return response.status(404).json({ error: "Driver not found" });
   }
-
-  driver.team_id = team_id;
-
-  return response.status(201).json(driver.team_id);
-
-  // database("drivers")
-  //   .where(driver_id, "id")
-  //   .update({ team })
-  //   .then(driver => {
-  //     if (driver) {
-  //       response.status(200).json(driver);
-  //     } else {
-  //       response.status(404).json({ error });
-  //     }
-  //   })
-  //   .catch(error => {
-  //     response.status(500).json({ error });
-  //   });
+  database("drivers")
+    .where(driver_id, "id")
+    .update({ team })
+    .then(driver => {
+      if (driver) {
+        response.status(200).json(driver);
+      } else {
+        response.status(404).json({ error });
+      }
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
   // // requires - valid param, body
 });
 
@@ -170,15 +164,14 @@ app.delete("/api/v1/drivers/:driver_id", (request, response) => {
 // -- TEAMS -- //
 
 app.get("/api/v1/teams", (request, response) => {
-  return response.status(200).json(app.locals.teams);
-  // database("teams")
-  //   .select()
-  //   .then(teams => {
-  //     response.status(200).json(teams);
-  //   })
-  //   .catch(error => {
-  //     response.status(500).json({ error });
-  //   });
+  database("teams")
+    .select()
+    .then(teams => {
+      response.status(200).json(teams);
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
 });
 
 app.patch("/api/v1/teams/:team_id/podiums", (request, response) => {
@@ -299,7 +292,16 @@ app.delete("/api/v1/teams/:team_name", (request, response) => {
 
 // -- RACES -- //
 
-app.get("api/v1/races", (request, response) => {});
+app.get("/api/v1/races", (request, response) => {
+  database("races")
+    .select()
+    .then(races => {
+      response.status(200).json(races);
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
+});
 
 app.get("api/v1/races?continent=:continent_name", (request, response) => {
   // requires - query
