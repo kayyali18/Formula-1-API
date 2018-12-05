@@ -405,6 +405,80 @@ describe("Server file", () => {
             app.locals.teams = [];
           });
       });
+
+      it("should return 422 if missing params", done => {
+        const expected = "Unprocessable Entity - no team name";
+
+        chai
+          .request(app)
+          .post("/api/v1/teams")
+          .send({})
+          .end((error, response) => {
+            expect(response).to.have.status(422);
+            expect(response.body).to.equal(expected);
+            done();
+          });
+      });
+    });
+
+    describe("api/v1/team/:team - delete", () => {
+      it("should delete a team", done => {
+        const teams = [
+          {
+            name: "Volvo",
+            podiums: 2,
+            titles: 4
+          },
+          {
+            name: "Volkswagon",
+            podiums: 3,
+            titles: 12
+          }
+        ];
+
+        const expected = "Succesfully deleted Volkswagon";
+
+        app.locals.teams = teams;
+
+        chai
+          .request(app)
+          .delete("/api/v1/teams/Volkswagon")
+          .end((error, response) => {
+            expect(response).to.have.status(201);
+            expect(response.body).to.equal(expected);
+            done();
+            app.locals.teams = [];
+          });
+      });
+
+      it("should return 404 if the team does not exist", done => {
+        const teams = [
+          {
+            name: "Volvo",
+            podiums: 2,
+            titles: 4
+          },
+          {
+            name: "Volkswagon",
+            podiums: 3,
+            titles: 12
+          }
+        ];
+
+        const expected = "Cannot find team Toyota";
+
+        app.locals.teams = teams;
+
+        chai
+          .request(app)
+          .delete("/api/v1/teams/Toyota")
+          .end((error, response) => {
+            expect(response).to.have.status(404);
+            expect(response.body).to.equal(expected);
+            done();
+            app.locals.teams = [];
+          });
+      });
     });
   });
 });

@@ -249,7 +249,7 @@ app.post("/api/v1/teams", (request, response) => {
   const { name } = request.body;
 
   if (!name) {
-    return response.status(422).send("Unprocessable Entity - no team name");
+    return response.status(422).json("Unprocessable Entity - no team name");
   }
 
   const newTeam = {
@@ -257,8 +257,6 @@ app.post("/api/v1/teams", (request, response) => {
     podiums: 0,
     titles: 0
   };
-
-  console.log(newTeam);
 
   app.locals.teams = [...app.locals.teams, newTeam];
 
@@ -275,22 +273,30 @@ app.post("/api/v1/teams", (request, response) => {
   // requires - name, standing, podium finishes, titles
 });
 
-app.delete("api/v1/team/:team", (request, response) => {
-  const { team } = request.params;
+app.delete("/api/v1/teams/:team_name", (request, response) => {
+  const { team_name } = request.params;
 
-  if (typeof team !== "number") {
-    response.status(422).send("unprocessable entity");
+  const teamToDelete = app.locals.teams.find(team => {
+    return team.name === team_name;
+  });
+
+  if (!teamToDelete) {
+    return response.status(404).json(`Cannot find team ${team_name}`);
   }
 
-  database("teams")
-    .where(team_id, id)
-    .del()
-    .then(team => {
-      response.status(201).json(`Succesfully deleted ${team}`);
-    })
-    .catch(error => {
-      response.status(500).json({ error: error.message });
-    });
+  app.locals.teams = app.locals.teams.filter(team => team.name !== team_name);
+
+  return response.status(201).json(`Succesfully deleted ${team_name}`);
+
+  // database("teams")
+  //   .where(team_id, id)
+  //   .del()
+  //   .then(team => {
+  //     response.status(201).json(`Succesfully deleted ${team}`);
+  //   })
+  //   .catch(error => {
+  //     response.status(500).json({ error: error.message });
+  //   });
 });
 
 // -- RACES -- //
