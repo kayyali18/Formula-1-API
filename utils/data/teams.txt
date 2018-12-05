@@ -1,1 +1,82 @@
-{"Mercedes":{"drivers":["Lewis Hamilton","Valtteri Bottas"],"podiums":"162","titles":"5"},"Ferrari":{"drivers":["Sebastian Vettel","Kimi Räikkönen"],"podiums":"763","titles":"16"},"Red Bull":{"drivers":["DRIVERS Daniel","Ricciardo Max"],"podiums":"161","titles":"4"},"Renault":{"drivers":["Nico Hulkenberg","Carlos Sainz"],"podiums":"59","titles":"2"},"Haas":{"drivers":["Romain Grosjean","Kevin Magnussen"],"podiums":"N/A","titles":"N/A"},"McLaren":{"drivers":["Fernando Alonso","Stoffel Vandoorne"],"podiums":"485","titles":"8"},"Force India":{"drivers":["Sergio Perez","Esteban Ocon"],"podiums":"N/A","titles":"N/A"},"Sauber":{"drivers":["Marcus Ericsson","Charles Leclerc"],"podiums":"27","titles":"N/A"},"Toro Rosso":{"drivers":["Pierre Gasly","Brendon Hartley"],"podiums":"1","titles":"N/A"},"Williams":{"drivers":["Lance Stroll","Sergey Sirotkin"],"podiums":"311","titles":"9"}}
+{
+    "Mercedes": {
+        "drivers": [
+            "Lewis Hamilton",
+            "Valtteri Bottas"
+        ],
+        "podiums": "162",
+        "titles": "5"
+    },
+    "Ferrari": {
+        "drivers": [
+            "Sebastian Vettel",
+            "Kimi Räikkönen"
+        ],
+        "podiums": "763",
+        "titles": "16"
+    },
+    "Red Bull": {
+        "drivers": [
+            "DRIVERS Daniel",
+            "Ricciardo Max"
+        ],
+        "podiums": "161",
+        "titles": "4"
+    },
+    "Renault": {
+        "drivers": [
+            "Nico Hulkenberg",
+            "Carlos Sainz"
+        ],
+        "podiums": "59",
+        "titles": "2"
+    },
+    "Haas": {
+        "drivers": [
+            "Romain Grosjean",
+            "Kevin Magnussen"
+        ],
+        "podiums": "N/A",
+        "titles": "N/A"
+    },
+    "McLaren": {
+        "drivers": [
+            "Fernando Alonso",
+            "Stoffel Vandoorne"
+        ],
+        "podiums": "485",
+        "titles": "8"
+    },
+    "Force India": {
+        "drivers": [
+            "Sergio Perez",
+            "Esteban Ocon"
+        ],
+        "podiums": "N/A",
+        "titles": "N/A"
+    },
+    "Sauber": {
+        "drivers": [
+            "Marcus Ericsson",
+            "Charles Leclerc"
+        ],
+        "podiums": "27",
+        "titles": "N/A"
+    },
+    "Toro Rosso": {
+        "drivers": [
+            "Pierre Gasly",
+            "Brendon Hartley"
+        ],
+        "podiums": "1",
+        "titles": "N/A"
+    },
+    "Williams": {
+        "drivers": [
+            "Lance Stroll",
+            "Sergey Sirotkin"
+        ],
+        "podiums": "311",
+        "titles": "9"
+    }
+}

@@ -21,5 +21,8 @@ nightmare
   .end()
   .then(result => {
     let cleaned = cleaner(result);
-    console.log(cleaned);
+    fs.writeFileSync("./utils/data/GP.txt", cleaned, err => {
+      if (err) throw err;
+      console.log("file saved");
+    });
   });

@@ -1,1 +1,122 @@
-{"Hamilton":{"driver_id":"1","points":"408","nationality":"GBR","team_id":"foreign_id"},"Vettel":{"driver_id":"2","points":"320","nationality":"GER","team_id":"foreign_id"},"Räikkönen":{"driver_id":"3","points":"251","nationality":"FIN","team_id":"foreign_id"},"Verstappen":{"driver_id":"4","points":"249","nationality":"NED","team_id":"foreign_id"},"Bottas":{"driver_id":"5","points":"247","nationality":"FIN","team_id":"foreign_id"},"Ricciardo":{"driver_id":"6","points":"170","nationality":"AUS","team_id":"foreign_id"},"Hulkenberg":{"driver_id":"7","points":"69","nationality":"GER","team_id":"foreign_id"},"Perez":{"driver_id":"8","points":"62","nationality":"MEX","team_id":"foreign_id"},"Magnussen":{"driver_id":"9","points":"56","nationality":"DEN","team_id":"foreign_id"},"Sainz":{"driver_id":"10","points":"53","nationality":"ESP","team_id":"foreign_id"},"Alonso":{"driver_id":"11","points":"50","nationality":"ESP","team_id":"foreign_id"},"Ocon":{"driver_id":"12","points":"49","nationality":"FRA","team_id":"foreign_id"},"Leclerc":{"driver_id":"13","points":"39","nationality":"MON","team_id":"foreign_id"},"Grosjean":{"driver_id":"14","points":"37","nationality":"FRA","team_id":"foreign_id"},"Gasly":{"driver_id":"15","points":"29","nationality":"FRA","team_id":"foreign_id"},"Vandoorne":{"driver_id":"16","points":"12","nationality":"BEL","team_id":"foreign_id"},"Ericsson":{"driver_id":"17","points":"9","nationality":"SWE","team_id":"foreign_id"},"Stroll":{"driver_id":"18","points":"6","nationality":"CAN","team_id":"foreign_id"},"Hartley":{"driver_id":"19","points":"4","nationality":"NZL","team_id":"foreign_id"},"Sirotkin":{"driver_id":"20","points":"1","nationality":"RUS","team_id":"foreign_id"}}
+{
+    "Hamilton": {
+        "driver_id": "1",
+        "points": "408",
+        "nationality": "GBR",
+        "team_id": "foreign_id"
+    },
+    "Vettel": {
+        "driver_id": "2",
+        "points": "320",
+        "nationality": "GER",
+        "team_id": "foreign_id"
+    },
+    "Räikkönen": {
+        "driver_id": "3",
+        "points": "251",
+        "nationality": "FIN",
+        "team_id": "foreign_id"
+    },
+    "Verstappen": {
+        "driver_id": "4",
+        "points": "249",
+        "nationality": "NED",
+        "team_id": "foreign_id"
+    },
+    "Bottas": {
+        "driver_id": "5",
+        "points": "247",
+        "nationality": "FIN",
+        "team_id": "foreign_id"
+    },
+    "Ricciardo": {
+        "driver_id": "6",
+        "points": "170",
+        "nationality": "AUS",
+        "team_id": "foreign_id"
+    },
+    "Hulkenberg": {
+        "driver_id": "7",
+        "points": "69",
+        "nationality": "GER",
+        "team_id": "foreign_id"
+    },
+    "Perez": {
+        "driver_id": "8",
+        "points": "62",
+        "nationality": "MEX",
+        "team_id": "foreign_id"
+    },
+    "Magnussen": {
+        "driver_id": "9",
+        "points": "56",
+        "nationality": "DEN",
+        "team_id": "foreign_id"
+    },
+    "Sainz": {
+        "driver_id": "10",
+        "points": "53",
+        "nationality": "ESP",
+        "team_id": "foreign_id"
+    },
+    "Alonso": {
+        "driver_id": "11",
+        "points": "50",
+        "nationality": "ESP",
+        "team_id": "foreign_id"
+    },
+    "Ocon": {
+        "driver_id": "12",
+        "points": "49",
+        "nationality": "FRA",
+        "team_id": "foreign_id"
+    },
+    "Leclerc": {
+        "driver_id": "13",
+        "points": "39",
+        "nationality": "MON",
+        "team_id": "foreign_id"
+    },
+    "Grosjean": {
+        "driver_id": "14",
+        "points": "37",
+        "nationality": "FRA",
+        "team_id": "foreign_id"
+    },
+    "Gasly": {
+        "driver_id": "15",
+        "points": "29",
+        "nationality": "FRA",
+        "team_id": "foreign_id"
+    },
+    "Vandoorne": {
+        "driver_id": "16",
+        "points": "12",
+        "nationality": "BEL",
+        "team_id": "foreign_id"
+    },
+    "Ericsson": {
+        "driver_id": "17",
+        "points": "9",
+        "nationality": "SWE",
+        "team_id": "foreign_id"
+    },
+    "Stroll": {
+        "driver_id": "18",
+        "points": "6",
+        "nationality": "CAN",
+        "team_id": "foreign_id"
+    },
+    "Hartley": {
+        "driver_id": "19",
+        "points": "4",
+        "nationality": "NZL",
+        "team_id": "foreign_id"
+    },
+    "Sirotkin": {
+        "driver_id": "20",
+        "points": "1",
+        "nationality": "RUS",
+        "team_id": "foreign_id"
+    }
+}
