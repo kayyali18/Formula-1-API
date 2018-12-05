@@ -4,6 +4,7 @@
   "description": "A back-end server built using node",
   "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "test": "NODE_ENV=test /node_modules/.bin/_mocha/ --exit"
   },
   "repository": {
