@@ -28,27 +28,61 @@ app.get("/api/v1/drivers", (request, response) => {
   //   });
 });
 
+app.patch("/api/v1/drivers/:driver_id/team", (request, response) => {
+  const { driver_id } = request.params;
+  const { team_id } = request.body;
+
+  const driver = app.locals.drivers.find(driver => driver.id == driver_id);
+
+  if (typeof team_id !== "string") {
+    return response.status(422).json(`${team_id} is not a string`);
+  }
+
+  if (!driver) {
+    return response.status(404).json({ error: "Driver not found" });
+  }
+
+  driver.team_id = team_id;
+
+  return response.status(201).json(driver.team_id);
+
+  // database("drivers")
+  //   .where(driver_id, "id")
+  //   .update({ team })
+  //   .then(driver => {
+  //     if (driver) {
+  //       response.status(200).json(driver);
+  //     } else {
+  //       response.status(404).json({ error });
+  //     }
+  //   })
+  //   .catch(error => {
+  //     response.status(500).json({ error });
+  //   });
+  // // requires - valid param, body
+});
+
 app.get("api/v1/drivers/:driver_name", (request, response) => {
   // requires - valid param
   const { driver_name } = request.params;
 
   if (typeof driver_name !== "string") {
-    response.status(422).send("unprocessable entity");
+    response.status(422).json({ error: "unprocessable entity" });
   }
 
-  database("drivers")
-    .where(driver_name, "name")
-    .select()
-    .then(driver => {
-      if (driver) {
-        response.status(200).json(driver);
-      } else {
-        response.status(404).json();
-      }
-    })
-    .catch(error => {
-      response.status(500).json({ error });
-    });
+  // database("drivers")
+  //   .where(driver_name, "name")
+  //   .select()
+  //   .then(driver => {
+  //     if (driver) {
+  //       response.status(200).json(driver);
+  //     } else {
+  //       response.status(404).json();
+  //     }
+  //   })
+  //   .catch(error => {
+  //     response.status(500).json({ error });
+  //   });
 });
 
 app.patch("/api/v1/drivers/:driver_id/points", (request, response) => {
@@ -84,40 +118,6 @@ app.patch("/api/v1/drivers/:driver_id/points", (request, response) => {
   //   });
 });
 
-app.patch("/api/v1/drivers/:driver_id/team", (request, response) => {
-  const { driver_id } = request.params;
-  const { team_id } = request.body;
-
-  const driver = app.locals.drivers.find(driver => driver.id == driver_id);
-
-  if (typeof team_id !== "string") {
-    return response.status(422).send(`${team_id} is not a string`);
-  }
-
-  if (!driver) {
-    return response.status(404).send("Driver not found");
-  }
-
-  driver.team_id = team_id;
-
-  return response.status(201).json(driver.team);
-
-  // database("drivers")
-  //   .where(driver_id, "id")
-  //   .update({ team })
-  //   .then(driver => {
-  //     if (driver) {
-  //       response.status(200).json(driver);
-  //     } else {
-  //       response.status(404).json({ error });
-  //     }
-  //   })
-  //   .catch(error => {
-  //     response.status(500).json({ error });
-  //   });
-  // // requires - valid param, body
-});
-
 app.post("/api/v1/team/:team_id/drivers", (request, response) => {
   const driver = { ...request.body, team_id: request.params.team_id };
 
@@ -129,9 +129,7 @@ app.post("/api/v1/team/:team_id/drivers", (request, response) => {
 
   app.locals.drivers = [...app.locals.drivers, driver];
 
-  return response
-    .status(201)
-    .json({ message: `succesfully added ${driver.name}` });
+  return response.status(201).json(`succesfully added ${driver.name}`);
 
   // database("drivers")
   //   .insert(driver, "id")

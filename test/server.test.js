@@ -20,14 +20,15 @@ describe("Server file", () => {
   describe("driver endpoints", () => {
     it("should post a new driver", done => {
       const body = { name: "Kevin", country: "USA" };
-      const expected = [{ ...body, team_id: "1" }];
+      const expected = "succesfully added Kevin";
+
       chai
         .request(app)
         .post("/api/v1/team/1/drivers")
         .send(body)
         .end((error, response) => {
           expect(response).to.have.status(201);
-          expect(app.locals.drivers).to.deep.equal(expected); //THIS SHOULD EVALUATE THE RESPONSE OBJECT
+          expect(response.body).to.equal(expected); //THIS SHOULD EVALUATE THE RESPONSE OBJECT
           app.locals.drivers = [];
           done();
         });
@@ -42,7 +43,7 @@ describe("Server file", () => {
           country: "Finland"
         };
         const body = { team_id: "Sauber" };
-        const expected = [{ ...driver, team_id: "Sauber" }];
+        const expected = "Sauber";
         app.locals.drivers = [driver];
         chai
           .request(app)
@@ -50,7 +51,7 @@ describe("Server file", () => {
           .send(body)
           .end((error, response) => {
             expect(response).to.have.status(201);
-            expect(app.locals.drivers).to.deep.equal(expected); //THIS SHOULD EVALUATE THE RESPONSE OBJECT
+            expect(response.body).to.equal(expected); //THIS SHOULD EVALUATE THE RESPONSE OBJECT
             done();
             app.locals.drivers = [];
           });
@@ -74,8 +75,8 @@ describe("Server file", () => {
           .send(body)
           .end((error, response) => {
             expect(response).to.have.status(404);
+            expect(response.body).to.deep.equal({ error: "Driver not found" });
             done();
-            app.locals.drivers = [];
           });
       });
 
@@ -97,6 +98,7 @@ describe("Server file", () => {
           .send(body)
           .end((error, response) => {
             expect(response).to.have.status(422);
+            expect(response.body).to.equal("1 is not a string");
             done();
             app.locals.drivers = [];
           });
@@ -124,7 +126,7 @@ describe("Server file", () => {
             .send(body)
             .end((error, response) => {
               expect(response).to.have.status(201);
-              expect(app.locals.drivers).to.deep.equal(expected); //THIS SHOULD EVALUATE THE RESPONSE OBJECT
+              expect(response.text).to.equal("changed");
               done();
               app.locals.driver = [];
             });
