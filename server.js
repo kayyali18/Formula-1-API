@@ -28,27 +28,61 @@ app.get("/api/v1/drivers", (request, response) => {
   //   });
 });
 
+app.patch("/api/v1/drivers/:driver_id/team", (request, response) => {
+  const { driver_id } = request.params;
+  const { team_id } = request.body;
+
+  const driver = app.locals.drivers.find(driver => driver.id == driver_id);
+
+  if (typeof team_id !== "string") {
+    return response.status(422).json(`${team_id} is not a string`);
+  }
+
+  if (!driver) {
+    return response.status(404).json({ error: "Driver not found" });
+  }
+
+  driver.team_id = team_id;
+
+  return response.status(201).json(driver.team_id);
+
+  // database("drivers")
+  //   .where(driver_id, "id")
+  //   .update({ team })
+  //   .then(driver => {
+  //     if (driver) {
+  //       response.status(200).json(driver);
+  //     } else {
+  //       response.status(404).json({ error });
+  //     }
+  //   })
+  //   .catch(error => {
+  //     response.status(500).json({ error });
+  //   });
+  // // requires - valid param, body
+});
+
 app.get("api/v1/drivers/:driver_name", (request, response) => {
   // requires - valid param
   const { driver_name } = request.params;
 
   if (typeof driver_name !== "string") {
-    response.status(422).send("unprocessable entity");
+    response.status(422).json({ error: "unprocessable entity" });
   }
 
-  database("drivers")
-    .where(driver_name, "name")
-    .select()
-    .then(driver => {
-      if (driver) {
-        response.status(200).json(driver);
-      } else {
-        response.status(404).json();
-      }
-    })
-    .catch(error => {
-      response.status(500).json({ error });
-    });
+  // database("drivers")
+  //   .where(driver_name, "name")
+  //   .select()
+  //   .then(driver => {
+  //     if (driver) {
+  //       response.status(200).json(driver);
+  //     } else {
+  //       response.status(404).json();
+  //     }
+  //   })
+  //   .catch(error => {
+  //     response.status(500).json({ error });
+  //   });
 });
 
 app.patch("/api/v1/drivers/:driver_id/points", (request, response) => {
@@ -84,40 +118,6 @@ app.patch("/api/v1/drivers/:driver_id/points", (request, response) => {
   //   });
 });
 
-app.patch("/api/v1/drivers/:driver_id/team", (request, response) => {
-  const { driver_id } = request.params;
-  const { team_id } = request.body;
-
-  const driver = app.locals.drivers.find(driver => driver.id == driver_id);
-
-  if (typeof team_id !== "string") {
-    return response.status(422).send(`${team_id} is not a string`);
-  }
-
-  if (!driver) {
-    return response.status(404).send("Driver not found");
-  }
-
-  driver.team_id = team_id;
-
-  return response.status(201).json(driver.team);
-
-  // database("drivers")
-  //   .where(driver_id, "id")
-  //   .update({ team })
-  //   .then(driver => {
-  //     if (driver) {
-  //       response.status(200).json(driver);
-  //     } else {
-  //       response.status(404).json({ error });
-  //     }
-  //   })
-  //   .catch(error => {
-  //     response.status(500).json({ error });
-  //   });
-  // // requires - valid param, body
-});
-
 app.post("/api/v1/team/:team_id/drivers", (request, response) => {
   const driver = { ...request.body, team_id: request.params.team_id };
 
@@ -129,9 +129,7 @@ app.post("/api/v1/team/:team_id/drivers", (request, response) => {
 
   app.locals.drivers = [...app.locals.drivers, driver];
 
-  return response
-    .status(201)
-    .json({ message: `succesfully added ${driver.name}` });
+  return response.status(201).json(`succesfully added ${driver.name}`);
 
   // database("drivers")
   //   .insert(driver, "id")
@@ -249,7 +247,7 @@ app.post("/api/v1/teams", (request, response) => {
   const { name } = request.body;
 
   if (!name) {
-    return response.status(422).send("Unprocessable Entity - no team name");
+    return response.status(422).json("Unprocessable Entity - no team name");
   }
 
   const newTeam = {
@@ -257,8 +255,6 @@ app.post("/api/v1/teams", (request, response) => {
     podiums: 0,
     titles: 0
   };
-
-  console.log(newTeam);
 
   app.locals.teams = [...app.locals.teams, newTeam];
 
@@ -275,22 +271,30 @@ app.post("/api/v1/teams", (request, response) => {
   // requires - name, standing, podium finishes, titles
 });
 
-app.delete("api/v1/team/:team", (request, response) => {
-  const { team } = request.params;
+app.delete("/api/v1/teams/:team_name", (request, response) => {
+  const { team_name } = request.params;
 
-  if (typeof team !== "number") {
-    response.status(422).send("unprocessable entity");
+  const teamToDelete = app.locals.teams.find(team => {
+    return team.name === team_name;
+  });
+
+  if (!teamToDelete) {
+    return response.status(404).json(`Cannot find team ${team_name}`);
   }
 
-  database("teams")
-    .where(team_id, id)
-    .del()
-    .then(team => {
-      response.status(201).json(`Succesfully deleted ${team}`);
-    })
-    .catch(error => {
-      response.status(500).json({ error: error.message });
-    });
+  app.locals.teams = app.locals.teams.filter(team => team.name !== team_name);
+
+  return response.status(201).json(`Succesfully deleted ${team_name}`);
+
+  // database("teams")
+  //   .where(team_id, id)
+  //   .del()
+  //   .then(team => {
+  //     response.status(201).json(`Succesfully deleted ${team}`);
+  //   })
+  //   .catch(error => {
+  //     response.status(500).json({ error: error.message });
+  //   });
 });
 
 // -- RACES -- //

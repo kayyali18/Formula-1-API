@@ -19,7 +19,9 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
-    "nightmare": "^3.0.1"
+    "knex": "^0.15.2",
+    "nightmare": "^3.0.1",
+    "pg": "^7.7.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",
