@@ -49,28 +49,24 @@ app.patch("/api/v1/drivers/:driver_id/team", (request, response) => {
     });
 });
 
-// app.get("api/v1/drivers/:driver_name", (request, response) => {
-//   // requires - valid param
-//   const { driver_name } = request.params;
+app.get("api/v1/drivers/:team_id", (request, response) => {
+  // requires - valid param
+  const { team_id } = request.params;
 
-//   if (typeof driver_name !== "string") {
-//     response.status(422).json({ error: "unprocessable entity" });
-//   }
-
-//   database("drivers")
-//     .where(driver_name, "name")
-//     .select()
-//     .then(driver => {
-//       if (driver) {
-//         response.status(200).json(driver);
-//       } else {
-//         response.status(404).json();
-//       }
-//     })
-//     .catch(error => {
-//       response.status(500).json({ error });
-//     });
-// });
+  database("drivers")
+    .where("team_id", team_id)
+    .select()
+    .then(driver => {
+      if (driver) {
+        response.status(200).json(driver);
+      } else {
+        response.status(404).json(`No drivers found with team id ${team_id}`);
+      }
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
+});
 
 app.patch("/api/v1/drivers/:driver_id/points", (request, response) => {
   const { driver_id } = request.params;
