@@ -8,6 +8,14 @@ const configuration = require("../knexfile")["test"];
 const database = require("knex")(configuration);
 
 describe("Server file", () => {
+  beforeEach(done => {
+    database.migrate
+      .rollback()
+      .then(() => database.migrate.latest())
+      .then(() => database.seed.run())
+      .then(() => done());
+  });
+
   describe("/api/v1/drivers", () => {
     it("should return a 200 status code", done => [
       chai
