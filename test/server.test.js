@@ -9,6 +9,18 @@ const database = require("knex")(configuration);
 
 describe("Server file", () => {
   describe("/api/v1/drivers", () => {
+    it("should return a 200 status code", done => [
+      chai
+        .request(app)
+        .get("/api/v1/drivers")
+        .end((error, response) => {
+          expect(response).to.have.status(200);
+          done();
+        })
+    ]);
+  });
+
+  describe("driver endpoints", () => {
     beforeEach(done => {
       database.migrate
         .rollback()
@@ -26,18 +38,6 @@ describe("Server file", () => {
         .then(() => done());
     });
 
-    it("should return a 200 status code", done => [
-      chai
-        .request(app)
-        .get("/api/v1/drivers")
-        .end((error, response) => {
-          expect(response).to.have.status(200);
-          done();
-        })
-    ]);
-  });
-
-  describe("driver endpoints", () => {
     it("should post a new driver", done => {
       const body = { name: "Kevin", country: "USA" };
       const expected = "succesfully added Kevin";
@@ -114,22 +114,12 @@ describe("Server file", () => {
             });
         });
 
-        it.only("should return 404 if the driver is not found", done => {
-          const driver = {
-            id: "4",
-            name: "Steve",
-            team_id: "Mclaren",
-            country: "UK",
-            points: 80
-          };
-
+        it("should return 404 if the driver is not found", done => {
           const body = { points: 89 };
-
-          app.locals.drivers = [driver];
 
           chai
             .request(app)
-            .patch("/api/v1/drivers/10/points")
+            .patch("/api/v1/drivers/21/points")
             .send(body)
             .end((error, response) => {
               expect(response).to.have.status(404);
