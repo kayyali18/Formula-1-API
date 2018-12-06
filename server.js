@@ -49,28 +49,28 @@ app.patch("/api/v1/drivers/:driver_id/team", (request, response) => {
     });
 });
 
-app.get("api/v1/drivers/:driver_name", (request, response) => {
-  // requires - valid param
-  const { driver_name } = request.params;
+// app.get("api/v1/drivers/:driver_name", (request, response) => {
+//   // requires - valid param
+//   const { driver_name } = request.params;
 
-  if (typeof driver_name !== "string") {
-    response.status(422).json({ error: "unprocessable entity" });
-  }
+//   if (typeof driver_name !== "string") {
+//     response.status(422).json({ error: "unprocessable entity" });
+//   }
 
-  // database("drivers")
-  //   .where(driver_name, "name")
-  //   .select()
-  //   .then(driver => {
-  //     if (driver) {
-  //       response.status(200).json(driver);
-  //     } else {
-  //       response.status(404).json();
-  //     }
-  //   })
-  //   .catch(error => {
-  //     response.status(500).json({ error });
-  //   });
-});
+//   database("drivers")
+//     .where(driver_name, "name")
+//     .select()
+//     .then(driver => {
+//       if (driver) {
+//         response.status(200).json(driver);
+//       } else {
+//         response.status(404).json();
+//       }
+//     })
+//     .catch(error => {
+//       response.status(500).json({ error });
+//     });
+// });
 
 app.patch("/api/v1/drivers/:driver_id/points", (request, response) => {
   const { driver_id } = request.params;
@@ -78,31 +78,22 @@ app.patch("/api/v1/drivers/:driver_id/points", (request, response) => {
 
   if (!points) return response.status(422).send("Unprocessable entity");
 
-  const driver = app.locals.drivers.find(driver => {
-    return driver.id === driver_id;
-  });
-
-  if (!driver) {
+  if (!driver_id) {
     return response.status(404).send("Driver not found");
   }
 
-  driver.points = points;
-
-  return response.status(201).send("changed");
-
-  // database("drivers")
-  //   .where(driver_id, "id")
-  //   .update({ points })
-  //   .then(driver => {
-  //     if (driver) {
-  //       response.status(200).json(driver);
-  //     } else {
-  //       response.status(404).json({ error });
-  //     }
-  //   })
-  //   .catch(error => {
-  //     response.status(500).json({ error });
-  //   });
+  database("drivers")
+    .where("id", driver_id)
+    .update({ points })
+    .then(driver => {
+      if (driver === 0) {
+        return response.status(404).json("Driver not found");
+      }
+      return response.status(201).json(driver);
+    })
+    .catch(error => {
+      return response.status(500).json({ error });
+    });
 });
 
 app.post("/api/v1/team/:team_id/drivers", (request, response) => {

@@ -64,8 +64,7 @@ describe("Server file", () => {
           .send(body)
           .end((error, response) => {
             expect(response).to.have.status(201);
-            expect(response.body).to.equal(expected); //THIS SHOULD EVALUATE THE RESPONSE OBJECT
-
+            expect(response.body).to.equal(expected);
             done();
           });
       });
@@ -80,7 +79,6 @@ describe("Server file", () => {
           .end((error, response) => {
             console.log("error", response.body);
             expect(response).to.have.status(404);
-
             done();
           });
       });
@@ -100,20 +98,10 @@ describe("Server file", () => {
       });
 
       describe("/api/v1/drivers/:driver_id/points", () => {
-        it.only("should update points properly", done => {
-          const driver = {
-            id: "4",
-            name: "Steve",
-            team_id: "Mclaren",
-            country: "UK",
-            points: 80
-          };
-
+        it("should update points properly", done => {
           const body = { points: 89 };
 
-          const expected = [{ ...driver, points: body.points }];
-
-          app.locals.drivers = [driver];
+          const expected = "1";
 
           chai
             .request(app)
@@ -121,13 +109,12 @@ describe("Server file", () => {
             .send(body)
             .end((error, response) => {
               expect(response).to.have.status(201);
-              expect(response.text).to.equal("changed");
+              expect(response.text).to.equal(expected);
               done();
-              app.locals.driver = [];
             });
         });
 
-        it("should return 404 if the driver is not found", done => {
+        it.only("should return 404 if the driver is not found", done => {
           const driver = {
             id: "4",
             name: "Steve",
