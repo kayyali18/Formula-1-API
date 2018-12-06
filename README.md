@@ -6,7 +6,7 @@ This API grants access to current Formula One driver, team, and gran prix statis
 
 ### DRIVERS
 
-####URL - `api/v1/drivers`
+#### URL - `api/v1/drivers`
 
 Method(s):
 
@@ -24,7 +24,7 @@ Succesful Response:
 - Code - 200
 - Content - driver array
 
-####URL - `api/v1/team/:team_id/drivers`
+#### URL - `api/v1/team/:team_id/drivers`
 
 Method(s):
 
@@ -72,7 +72,7 @@ Error Response:
 - Code (404), Content ('Team not found')
 - Code (422), Content ('Unprocessable Entity')
 
-###URL - `api/v1/drivers/:driver_id/points`
+#### URL - `api/v1/drivers/:driver_id/points`
 
 Method(s):
 
@@ -95,7 +95,7 @@ Error Response:
 - Code (404), Content ('Driver not found')
 - Code (422), Content ('Unprocessable Entity')
 
-####URL - `api/v1/drivers/:driver_id`
+#### URL - `api/v1/drivers/:driver_id`
 
 Method(s):
 
@@ -115,7 +115,7 @@ Error Response:
 
 ### TEAMS
 
-####URL - `api/v1/teams`
+#### URL - `api/v1/teams`
 
 Method(s):
 
@@ -131,7 +131,7 @@ Succesful Response:
 
 - Code(201), Content(array)
 
-####URL - `api/v1/teams/:team_id/podiums`
+#### URL - `api/v1/teams/:team_id/podiums`
 
 Method(s):
 
@@ -154,7 +154,7 @@ Error Response:
 - Code(422), Content(Unprocessable entity)
 - Code(404), Content(Team does not exist)
 
-####URL - `api/v1/teams/:team_id/titles`
+#### URL - `api/v1/teams/:team_id/titles`
 
 Method(s):
 
@@ -177,7 +177,7 @@ Error Response:
 - Code(422), Content(Unprocessable entity)
 - Code(404), Content(Team does not exist)
 
-####URL - api/v1/teams/:team_id
+#### URL - api/v1/teams/:team_id
 
 Method(s):
 
@@ -197,7 +197,7 @@ Error Response:
 
 ###RACES
 
-####URL - api/v1/races
+#### URL - api/v1/races
 
 Method(s):
 
@@ -221,7 +221,7 @@ Error Response:
 
 - Code(422), Content(Unprocessable Entity)
 
-####URL - api/race/:race_id
+#### URL - api/race/:race_id
 
 Method(s)
 
