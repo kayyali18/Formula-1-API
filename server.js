@@ -49,7 +49,7 @@ app.patch("/api/v1/drivers/:driver_id/team", (request, response) => {
     });
 });
 
-app.get("api/v1/drivers/:team_id", (request, response) => {
+app.get("/api/v1/drivers/team/:team_id", (request, response) => {
   // requires - valid param
   const { team_id } = request.params;
 
@@ -57,8 +57,8 @@ app.get("api/v1/drivers/:team_id", (request, response) => {
     .where("team_id", team_id)
     .select()
     .then(driver => {
-      if (driver) {
-        response.status(200).json(driver);
+      if (driver.length > 0) {
+        response.status(201).json(driver);
       } else {
         response.status(404).json(`No drivers found with team id ${team_id}`);
       }
@@ -343,6 +343,24 @@ app.delete("/api/v1/race/:country", (request, response) => {
     })
     .catch(error => {
       return response.status(500).json({ error: error.message });
+    });
+});
+
+app.get("/api/v1/races/drivers/:driver_id", (request, response) => {
+  const { driver_id } = request.params;
+
+  database("races")
+    .where("winner_id", driver_id)
+    .select()
+    .then(races => {
+      if (races.length >= 1) {
+        return response.status(201).json(races);
+      } else {
+        return response.status(204).json(races);
+      }
+    })
+    .catch(error => {
+      response.status(500).json(races);
     });
 });
 
