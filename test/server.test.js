@@ -34,24 +34,10 @@ describe("Server file", () => {
         .rollback()
         .then(() => database.migrate.latest())
         .then(() => database.seed.run())
-        .then(() => console.log("Testing complete. Db rolled back."))
+        .then(() =>
+          console.log("Testing complete. Database rolled back and reseeded")
+        )
         .then(() => done());
-    });
-
-    it("should post a new driver", done => {
-      const body = { name: "Kevin", country: "USA" };
-      const expected = "succesfully added Kevin";
-
-      chai
-        .request(app)
-        .post("/api/v1/team/1/drivers")
-        .send(body)
-        .end((error, response) => {
-          expect(response).to.have.status(201);
-          expect(response.body).to.equal(expected); //THIS SHOULD EVALUATE THE RESPONSE OBJECT
-          app.locals.drivers = [];
-          done();
-        });
     });
 
     describe("/api/v1/drivers/:driver_id/team", () => {
@@ -123,7 +109,6 @@ describe("Server file", () => {
             .end((error, response) => {
               expect(response).to.have.status(404);
               done();
-              app.locals.driver = [];
             });
         });
 
@@ -136,6 +121,58 @@ describe("Server file", () => {
             .send(body)
             .end((error, response) => {
               expect(response).to.have.status(422);
+              done();
+            });
+        });
+      });
+
+      describe("api/v1/:team_id/drivers - add driver", () => {
+        it("should add a driver", done => {
+          const driver = {
+            name: "Jim",
+            country: "USA"
+          };
+
+          chai
+            .request(app)
+            .post("/api/v1/team/5/drivers")
+            .send(driver)
+            .end((error, response) => {
+              expect(response).to.have.status(201);
+              expect(response.body).to.equal(21);
+              done();
+            });
+        });
+
+        it("should return 404 if the team does not exist", done => {
+          const driver = {
+            name: "Jim",
+            country: "USA"
+          };
+
+          chai
+            .request(app)
+            .post("/api/v1/team/22/drivers")
+            .send(driver)
+            .end((error, response) => {
+              expect(response).to.have.status(404);
+              expect(response.body).to.equal("Team does not exist");
+              done();
+            });
+        });
+
+        it("should return 422 if missing paramets", done => {
+          const driver = {
+            name: "Bobby"
+          };
+
+          chai
+            .request(app)
+            .post("/api/v1/team/22/drivers")
+            .send(driver)
+            .end((error, response) => {
+              expect(response).to.have.status(422);
+              expect(response.body).to.deep.equal({ error: "Missing country" });
               done();
             });
         });
@@ -178,7 +215,6 @@ describe("Server file", () => {
           expect(response).to.have.status(200);
           expect(response.body.length).to.equal(10); //THIS SHOULD EVALUATE THE RESPONSE OBJECT
           done();
-          app.locals.teams = [];
         });
     });
 
@@ -254,7 +290,6 @@ describe("Server file", () => {
             expect(response).to.have.status(244);
             expect(response.body).to.equal("Unprocessable entity");
             done();
-            app.locals.teams = [];
           });
       });
 
@@ -288,7 +323,6 @@ describe("Server file", () => {
             expect(response).to.have.status(201);
             expect(response.body).to.equal(expected);
             done();
-            app.locals.teams = [];
           });
       });
 
@@ -309,60 +343,28 @@ describe("Server file", () => {
 
     describe("api/v1/team/:team - delete", () => {
       it("should delete a team", done => {
-        const teams = [
-          {
-            name: "Volvo",
-            podiums: 2,
-            titles: 4
-          },
-          {
-            name: "Volkswagon",
-            podiums: 3,
-            titles: 12
-          }
-        ];
-
-        const expected = "Succesfully deleted Volkswagon";
-
-        app.locals.teams = teams;
+        const expected = "Succesfully deleted 1 team";
 
         chai
           .request(app)
-          .delete("/api/v1/teams/Volkswagon")
+          .delete("/api/v1/teams/3")
           .end((error, response) => {
             expect(response).to.have.status(201);
             expect(response.body).to.equal(expected);
             done();
-            app.locals.teams = [];
           });
       });
 
       it("should return 404 if the team does not exist", done => {
-        const teams = [
-          {
-            name: "Volvo",
-            podiums: 2,
-            titles: 4
-          },
-          {
-            name: "Volkswagon",
-            podiums: 3,
-            titles: 12
-          }
-        ];
-
-        const expected = "Cannot find team Toyota";
-
-        app.locals.teams = teams;
+        const expected = 0;
 
         chai
           .request(app)
-          .delete("/api/v1/teams/Toyota")
+          .delete("/api/v1/teams/33")
           .end((error, response) => {
             expect(response).to.have.status(404);
             expect(response.body).to.equal(expected);
             done();
-            app.locals.teams = [];
           });
       });
     });

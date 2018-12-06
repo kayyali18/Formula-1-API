@@ -20,10 +20,10 @@ app.get("/api/v1/drivers", (request, response) => {
   database("drivers")
     .select()
     .then(drivers => {
-      response.status(200).json(drivers);
+      return response.status(200).json(drivers);
     })
     .catch(error => {
-      response.status(500).json({ error });
+      return response.status(500).json({ error });
     });
 });
 
@@ -97,7 +97,11 @@ app.patch("/api/v1/drivers/:driver_id/points", (request, response) => {
 });
 
 app.post("/api/v1/team/:team_id/drivers", (request, response) => {
-  const driver = { ...request.body, team_id: request.params.team_id };
+  const driver = {
+    ...request.body,
+    team_id: request.params.team_id,
+    points: 0
+  };
 
   for (let requiredParam of ["name", "country", "team_id"]) {
     if (!driver[requiredParam]) {
@@ -105,18 +109,22 @@ app.post("/api/v1/team/:team_id/drivers", (request, response) => {
     }
   }
 
-  app.locals.drivers = [...app.locals.drivers, driver];
-
-  return response.status(201).json(`succesfully added ${driver.name}`);
-
-  // database("drivers")
-  //   .insert(driver, "id")
-  //   .then(driver_id => {
-  //     response.status(201).json({ id: driver_id });
-  //   })
-  //   .catch(error => {
-  //     response.status(500).json({ error: error.message });
-  //   });
+  database("teams")
+    .where("id", driver.team_id)
+    .then(team => {
+      if (team.length === 0) {
+        return response.status(404).json("Team does not exist");
+      } else {
+        database("drivers")
+          .insert(driver, "id")
+          .then(driver_id => {
+            return response.status(201).json(driver_id[0]);
+          })
+          .catch(error => {
+            return response.status(500).json({ error: error.message });
+          });
+      }
+    });
 });
 
 app.delete("/api/v1/drivers/:driver_id", (request, response) => {
@@ -149,10 +157,10 @@ app.get("/api/v1/teams", (request, response) => {
   database("teams")
     .select()
     .then(teams => {
-      response.status(200).json(teams);
+      return response.status(200).json(teams);
     })
     .catch(error => {
-      response.status(500).json({ error });
+      return response.status(500).json({ error });
     });
 });
 
@@ -175,7 +183,7 @@ app.patch("/api/v1/teams/:team_id/podiums", (request, response) => {
       }
     })
     .catch(error => {
-      response.status(500).json({ error });
+      return response.status(500).json({ error });
     });
 });
 
@@ -192,7 +200,7 @@ app.patch("/api/v1/teams/:team_id/titles", (request, response) => {
     .update({ titles })
     .then(team => {
       if (team === 0) {
-        return response.status(404).json("Team not found")
+        return response.status(404).json("Team not found");
       } else {
         return response.status(201).json(team);
       }
@@ -218,37 +226,40 @@ app.post("/api/v1/teams", (request, response) => {
   database("teams")
     .insert(newTeam, "id")
     .then(newTeam => {
-      response.status(201).json(`Added team ${name}`);
+      return response.status(201).json(`Added team ${name}`);
     })
     .catch(error => {
-      response.status(500).json({ error });
+      return response.status(500).json({ error });
     });
 });
 
-app.delete("/api/v1/teams/:team_name", (request, response) => {
-  const { team_name } = request.params;
+app.delete("/api/v1/teams/:team_id", (request, response) => {
+  const { team_id } = request.params;
 
-  const teamToDelete = app.locals.teams.find(team => {
-    return team.name === team_name;
-  });
-
-  if (!teamToDelete) {
-    return response.status(404).json(`Cannot find team ${team_name}`);
-  }
-
-  app.locals.teams = app.locals.teams.filter(team => team.name !== team_name);
-
-  return response.status(201).json(`Succesfully deleted ${team_name}`);
-
-  // database("teams")
-  //   .where(team_id, id)
-  //   .del()
-  //   .then(team => {
-  //     response.status(201).json(`Succesfully deleted ${team}`);
-  //   })
-  //   .catch(error => {
-  //     response.status(500).json({ error: error.message });
-  //   });
+  database("races")
+    .where("winning_team_id", team_id)
+    .del()
+    .then(() => {
+      database("drivers")
+        .where("team_id", team_id)
+        .del()
+        .then(() => {
+          database("teams")
+            .where("id", team_id)
+            .del()
+            .then(team => {
+              if (team === 0) {
+                return response.status(404).json(team);
+              }
+              return response
+                .status(201)
+                .json(`Succesfully deleted ${team} team`);
+            })
+            .catch(error => {
+              return response.status(500).json({ error: error.message });
+            });
+        });
+    });
 });
 
 // -- RACES -- //
@@ -257,10 +268,10 @@ app.get("/api/v1/races", (request, response) => {
   database("races")
     .select()
     .then(races => {
-      response.status(200).json(races);
+      return response.status(200).json(races);
     })
     .catch(error => {
-      response.status(500).json({ error });
+      return response.status(500).json({ error });
     });
 });
 
