@@ -206,6 +206,19 @@ describe("Server file", () => {
     });
   });
 
+  describe("Race endpoints", () => {
+    it("should get all grand prix", done => {
+      chai
+        .request(app)
+        .get("/api/v1/races")
+        .end((error, response) => {
+          expect(response).to.have.status(200);
+          expect(response.body.length).to.equal(19);
+          done();
+        });
+    });
+  });
+
   describe("Team endpoints", () => {
     it("should get all teams", done => {
       chai
@@ -235,7 +248,7 @@ describe("Server file", () => {
           });
       });
 
-      it("should return a 244 error if missing body params", done => {
+      it("should return a 422 error if missing body params", done => {
         const body = { name: "Test" };
 
         chai
@@ -243,7 +256,7 @@ describe("Server file", () => {
           .patch("/api/v1/teams/Toyota/podiums")
           .send(body)
           .end((error, response) => {
-            expect(response).to.have.status(244);
+            expect(response).to.have.status(422);
             expect(response.body).to.equal("unprocessable entity");
             done();
           });
