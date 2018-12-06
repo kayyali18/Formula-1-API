@@ -40,6 +40,34 @@ describe("Server file", () => {
         .then(() => done());
     });
 
+    describe("/api/v1/drivers:team_id - get", () => {
+      it("should get drivers by team_id", done => {
+        const expected = 2;
+
+        chai
+          .request(app)
+          .get("/api/v1/drivers/team/1")
+          .end((error, response) => {
+            expect(response).to.have.status(201);
+            expect(response.body.length).to.equal(expected);
+            done();
+          });
+      });
+
+      it("should return no drivers if team does not exist", done => {
+        const expected = "No drivers found with team id 32";
+
+        chai
+          .request(app)
+          .get("/api/v1/drivers/team/32")
+          .end((error, response) => {
+            expect(response).to.have.status(404);
+            expect(response.body).to.equal(expected);
+            done();
+          });
+      });
+    });
+
     describe("/api/v1/drivers/:driver_id/team", () => {
       it("should patch team", done => {
         const body = { team_id: 2 };
@@ -179,6 +207,25 @@ describe("Server file", () => {
       });
 
       describe("/api/v1/drivers/:driver_id - delete", () => {
+        beforeEach(done => {
+          database.migrate
+            .rollback()
+            .then(() => database.migrate.latest())
+            .then(() => database.seed.run())
+            .then(() => done());
+        });
+
+        after(done => {
+          database.migrate
+            .rollback()
+            .then(() => database.migrate.latest())
+            .then(() => database.seed.run())
+            .then(() =>
+              console.log("Testing complete. Database rolled back and reseeded")
+            )
+            .then(() => done());
+        });
+
         it("should delete a driver", done => {
           const expected = 1;
 
@@ -207,6 +254,25 @@ describe("Server file", () => {
   });
 
   describe("Race endpoints", () => {
+    beforeEach(done => {
+      database.migrate
+        .rollback()
+        .then(() => database.migrate.latest())
+        .then(() => database.seed.run())
+        .then(() => done());
+    });
+
+    after(done => {
+      database.migrate
+        .rollback()
+        .then(() => database.migrate.latest())
+        .then(() => database.seed.run())
+        .then(() =>
+          console.log("Testing complete. Database rolled back and reseeded")
+        )
+        .then(() => done());
+    });
+
     it("should get all grand prix", done => {
       chai
         .request(app)
@@ -225,7 +291,6 @@ describe("Server file", () => {
         .end((error, response) => {
           expect(response).to.have.status(200);
           expect(response.body.length).to.equal(10);
-          console.log(response.body);
           done();
         });
     });
@@ -446,6 +511,28 @@ describe("Server file", () => {
           .end((error, response) => {
             expect(response).to.have.status(404);
             expect(response.body).to.equal(expected);
+            done();
+          });
+      });
+
+      it("should return races won by a specific driver", done => {
+        chai
+          .request(app)
+          .get("/api/v1/races/drivers/1")
+          .end((error, response) => {
+            expect(response.body);
+            expect(response.body.length).to.equal(11);
+            expect(response).to.have.status(201);
+            done();
+          });
+      });
+
+      it("should return 204 if no races have been won by the specificed driver", done => {
+        chai
+          .request(app)
+          .get("/api/v1/races/drivers/100")
+          .end((error, response) => {
+            expect(response).to.have.status(204);
             done();
           });
       });
