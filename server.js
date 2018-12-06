@@ -20,10 +20,10 @@ app.get("/api/v1/drivers", (request, response) => {
   database("drivers")
     .select()
     .then(drivers => {
-      response.status(200).json(drivers);
+      return response.status(200).json(drivers);
     })
     .catch(error => {
-      response.status(500).json({ error });
+      return response.status(500).json({ error });
     });
 });
 
@@ -31,53 +31,46 @@ app.patch("/api/v1/drivers/:driver_id/team", (request, response) => {
   const { driver_id } = request.params;
   const { team_id } = request.body;
 
-  const driver = app.locals.drivers.find(driver => driver.id == driver_id);
-
-  if (typeof team_id !== "number") {
-    return response.status(422).json(`${team_id} is not a string`);
+  if (typeof team_id !== "number" || !team_id) {
+    return response.status(422).json(`${team_id} is not a number`);
   }
 
-  if (!driver) {
-    return response.status(404).json({ error: "Driver not found" });
-  }
   database("drivers")
-    .where(driver_id, "id")
-    .update({ team })
+    .where("id", driver_id)
+    .update({ team_id })
     .then(driver => {
-      if (driver) {
-        response.status(200).json(driver);
-      } else {
-        response.status(404).json({ error });
+      if (driver === 0) {
+        return response.status(404).json("Driver not found");
       }
+      return response.status(201).json(driver);
     })
     .catch(error => {
-      response.status(500).json({ error });
+      return response.status(500).json({ error });
     });
-  // // requires - valid param, body
 });
 
-app.get("api/v1/drivers/:driver_name", (request, response) => {
-  // requires - valid param
-  const { driver_name } = request.params;
+// app.get("api/v1/drivers/:driver_name", (request, response) => {
+//   // requires - valid param
+//   const { driver_name } = request.params;
 
-  if (typeof driver_name !== "string") {
-    response.status(422).json({ error: "unprocessable entity" });
-  }
+//   if (typeof driver_name !== "string") {
+//     response.status(422).json({ error: "unprocessable entity" });
+//   }
 
-  // database("drivers")
-  //   .where(driver_name, "name")
-  //   .select()
-  //   .then(driver => {
-  //     if (driver) {
-  //       response.status(200).json(driver);
-  //     } else {
-  //       response.status(404).json();
-  //     }
-  //   })
-  //   .catch(error => {
-  //     response.status(500).json({ error });
-  //   });
-});
+//   database("drivers")
+//     .where(driver_name, "name")
+//     .select()
+//     .then(driver => {
+//       if (driver) {
+//         response.status(200).json(driver);
+//       } else {
+//         response.status(404).json();
+//       }
+//     })
+//     .catch(error => {
+//       response.status(500).json({ error });
+//     });
+// });
 
 app.patch("/api/v1/drivers/:driver_id/points", (request, response) => {
   const { driver_id } = request.params;
@@ -85,35 +78,30 @@ app.patch("/api/v1/drivers/:driver_id/points", (request, response) => {
 
   if (!points) return response.status(422).send("Unprocessable entity");
 
-  const driver = app.locals.drivers.find(driver => {
-    return driver.id === driver_id;
-  });
-
-  if (!driver) {
+  if (!driver_id) {
     return response.status(404).send("Driver not found");
   }
 
-  driver.points = points;
-
-  return response.status(201).send("changed");
-
-  // database("drivers")
-  //   .where(driver_id, "id")
-  //   .update({ points })
-  //   .then(driver => {
-  //     if (driver) {
-  //       response.status(200).json(driver);
-  //     } else {
-  //       response.status(404).json({ error });
-  //     }
-  //   })
-  //   .catch(error => {
-  //     response.status(500).json({ error });
-  //   });
+  database("drivers")
+    .where("id", driver_id)
+    .update({ points })
+    .then(driver => {
+      if (driver === 0) {
+        return response.status(404).json("Driver not found");
+      }
+      return response.status(201).json(driver);
+    })
+    .catch(error => {
+      return response.status(500).json({ error });
+    });
 });
 
 app.post("/api/v1/team/:team_id/drivers", (request, response) => {
-  const driver = { ...request.body, team_id: request.params.team_id };
+  const driver = {
+    ...request.body,
+    team_id: request.params.team_id,
+    points: 0
+  };
 
   for (let requiredParam of ["name", "country", "team_id"]) {
     if (!driver[requiredParam]) {
@@ -121,44 +109,46 @@ app.post("/api/v1/team/:team_id/drivers", (request, response) => {
     }
   }
 
-  app.locals.drivers = [...app.locals.drivers, driver];
-
-  return response.status(201).json(`succesfully added ${driver.name}`);
-
-  // database("drivers")
-  //   .insert(driver, "id")
-  //   .then(driver_id => {
-  //     response.status(201).json({ id: driver_id });
-  //   })
-  //   .catch(error => {
-  //     response.status(500).json({ error: error.message });
-  //   });
+  database("teams")
+    .where("id", driver.team_id)
+    .then(team => {
+      if (team.length === 0) {
+        return response.status(404).json("Team does not exist");
+      } else {
+        database("drivers")
+          .insert(driver, "id")
+          .then(driver_id => {
+            return response.status(201).json(driver_id[0]);
+          })
+          .catch(error => {
+            return response.status(500).json({ error: error.message });
+          });
+      }
+    });
 });
 
 app.delete("/api/v1/drivers/:driver_id", (request, response) => {
   const { driver_id } = request.params;
 
-  const driver = app.locals.drivers.find(driver => {
-    return driver.id === driver_id;
-  });
+  database("races")
+    .where("winner_id", driver_id)
+    .del()
+    .then(() => {
+      database("drivers")
+        .where("id", driver_id)
+        .del()
+        .then(driver => {
+          if (driver === 0) {
+            return response.status(404).json("Driver not found");
+          }
+          return response.status(201).json(driver);
+        })
+        .catch(error => {
+          return response.status(500).json({ error: error.message });
+        });
+    });
 
-  if (!driver) return response.status(404).send("Driver not found");
-
-  app.locals.drivers = app.locals.drivers.filter(driver => {
-    return driver.id !== driver_id;
-  });
-
-  return response.status(201).send(`Delete driver ${driver}`);
-
-  // database("drivers")
-  //   .where(driver_id, id)
-  //   .del()
-  //   .then(driver => {
-  //     response.status(201).json(`Succesfully deleted ${driver}`);
-  //   })
-  //   .catch(error => {
-  //     response.status(500).json({ error: error.message });
-  //   });
+  // if (!driver_id) return response.status(404).send("Driver not found");
 });
 
 // -- TEAMS -- //
@@ -167,10 +157,10 @@ app.get("/api/v1/teams", (request, response) => {
   database("teams")
     .select()
     .then(teams => {
-      response.status(200).json(teams);
+      return response.status(200).json(teams);
     })
     .catch(error => {
-      response.status(500).json({ error });
+      return response.status(500).json({ error });
     });
 });
 
@@ -179,61 +169,45 @@ app.patch("/api/v1/teams/:team_id/podiums", (request, response) => {
   const { team_id } = request.params;
 
   if (!podiums || !team_id) {
-    return response.status(244).send("unprocessable entity");
+    return response.status(422).json("unprocessable entity");
   }
 
-  const teamToUpdate = app.locals.teams.find(team => {
-    return team.name === team_id;
-  });
-
-  if (!teamToUpdate) {
-    return response.status(404).send("Team not found");
-  }
-
-  teamToUpdate.podiums = podiums;
-
-  return response.status(201).send("Success!");
-
-  // database("teams")
-  //   .where(team_id, "id")
-  //   .update({ podiums: team.podiums })
-  //   .then(() => {
-  //     response.status(201).send("success");
-  //   })
-  //   .catch(error => {
-  //     response.status(500).json({ error });
-  //   });
+  database("teams")
+    .where("id", team_id)
+    .update({ podiums })
+    .then(driver => {
+      if (driver === 0) {
+        return response.status(404).json("Driver does not exist");
+      } else {
+        return response.status(201).json(driver);
+      }
+    })
+    .catch(error => {
+      return response.status(500).json({ error });
+    });
 });
 
 app.patch("/api/v1/teams/:team_id/titles", (request, response) => {
   const { titles } = request.body;
   const { team_id } = request.params;
 
-  if (!titles) {
-    return response.status(244).send("Unprocessable entity");
+  if (!titles || !team_id) {
+    return response.status(244).json("Unprocessable entity");
   }
 
-  const teamToUpdate = app.locals.teams.find(team => {
-    return team.name === team_id;
-  });
-
-  if (!teamToUpdate) {
-    return response.status(404).send("Team not found");
-  }
-
-  teamToUpdate.titles = titles;
-
-  return response.status(201).send(`Updated ${team_id} titles to ${titles}`);
-
-  // database("teams")
-  //   .where(team_id, "id")
-  //   .update({ titles })
-  //   .then(() => {
-  //     response.status(201).send("success");
-  //   })
-  //   .catch(error => {
-  //     response.status(500).json({ error });
-  //   });
+  database("teams")
+    .where("id", team_id)
+    .update({ titles })
+    .then(team => {
+      if (team === 0) {
+        return response.status(404).json("Team not found");
+      } else {
+        return response.status(201).json(team);
+      }
+    })
+    .catch(error => {
+      return response.status(500).json({ error });
+    });
 });
 
 app.post("/api/v1/teams", (request, response) => {
@@ -249,45 +223,43 @@ app.post("/api/v1/teams", (request, response) => {
     titles: 0
   };
 
-  app.locals.teams = [...app.locals.teams, newTeam];
-
-  return response.status(201).json(`Added team ${name}`);
-
-  // database("teams")
-  //   .insert(team, "id")
-  //   .then(newTeam => {
-  //     response.status(201).send(`Added ${newTeam} successfully`);
-  //   })
-  //   .catch(error => {
-  //     response.status(500).json({ error });
-  //   });
-  // requires - name, standing, podium finishes, titles
+  database("teams")
+    .insert(newTeam, "id")
+    .then(newTeam => {
+      return response.status(201).json(`Added team ${name}`);
+    })
+    .catch(error => {
+      return response.status(500).json({ error });
+    });
 });
 
-app.delete("/api/v1/teams/:team_name", (request, response) => {
-  const { team_name } = request.params;
+app.delete("/api/v1/teams/:team_id", (request, response) => {
+  const { team_id } = request.params;
 
-  const teamToDelete = app.locals.teams.find(team => {
-    return team.name === team_name;
-  });
-
-  if (!teamToDelete) {
-    return response.status(404).json(`Cannot find team ${team_name}`);
-  }
-
-  app.locals.teams = app.locals.teams.filter(team => team.name !== team_name);
-
-  return response.status(201).json(`Succesfully deleted ${team_name}`);
-
-  // database("teams")
-  //   .where(team_id, id)
-  //   .del()
-  //   .then(team => {
-  //     response.status(201).json(`Succesfully deleted ${team}`);
-  //   })
-  //   .catch(error => {
-  //     response.status(500).json({ error: error.message });
-  //   });
+  database("races")
+    .where("winning_team_id", team_id)
+    .del()
+    .then(() => {
+      database("drivers")
+        .where("team_id", team_id)
+        .del()
+        .then(() => {
+          database("teams")
+            .where("id", team_id)
+            .del()
+            .then(team => {
+              if (team === 0) {
+                return response.status(404).json(team);
+              }
+              return response
+                .status(201)
+                .json(`Succesfully deleted ${team} team`);
+            })
+            .catch(error => {
+              return response.status(500).json({ error: error.message });
+            });
+        });
+    });
 });
 
 // -- RACES -- //
@@ -296,10 +268,10 @@ app.get("/api/v1/races", (request, response) => {
   database("races")
     .select()
     .then(races => {
-      response.status(200).json(races);
+      return response.status(200).json(races);
     })
     .catch(error => {
-      response.status(500).json({ error });
+      return response.status(500).json({ error });
     });
 });
 
