@@ -1,1 +1,9 @@
 language: node_js
+node_js:
+  - "node"
+services:
+  - postgresql
+before_script:
+  - psql -c 'CREATE DATABASE formula_1_test;' -U postgres
+notifications:
+  email: false
