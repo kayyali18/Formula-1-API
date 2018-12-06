@@ -275,16 +275,81 @@ app.get("/api/v1/races", (request, response) => {
     });
 });
 
-app.get("api/v1/races?continent=:continent_name", (request, response) => {
+app.get("/api/v1/races?continent=continent_name", (request, response) => {
   // requires - query
+  const { continent } = request.query;
+  console.log(continent);
+
+  database("races")
+    .where("continent", continent)
+    .select()
+    .then(races => {
+      return response.status(200).json(races);
+    })
+    .catch(error => {
+      return response.status(500).json({ error });
+    });
 });
 
-app.post("api/v1/races", (request, response) => {
-  // requires - country, date, driver_id(winner), car, laps, time, driver_id(fastest lap), continent
+app.post("/api/v1/races", (request, response) => {
+  const {
+    name,
+    date,
+    winner_id,
+    winning_team_id,
+    laps,
+    fastest_lap,
+    continent
+  } = request.body;
+
+  if (
+    !name ||
+    !date ||
+    !winning_team_id ||
+    !winner_id ||
+    !laps ||
+    !fastest_lap ||
+    !continent
+  ) {
+    return response.status(422).json("unprocessable entity");
+  }
+
+  const newRace = {
+    name,
+    date,
+    winner_id,
+    winning_team_id,
+    laps,
+    fastest_lap,
+    continent
+  };
+
+  database("races")
+    .insert(newRace, "id")
+    .then(race => {
+      return response.status(201).json(`Added race ${name}`);
+    })
+    .catch(error => {
+      return response.status(500).json({ error });
+    });
 });
 
-app.delete("api/v1/race/:race_id", (request, response) => {
+app.delete("/api/v1/race/:country", (request, response) => {
   // requires - valid param
+  const { country } = request.params;
+
+  database("races")
+    .where("name", country)
+    .del()
+    .then(race => {
+      if (race === 0) {
+        return response.status(404).json(`Race not found`);
+      }
+      return response.status(201).json("Success");
+    })
+    .catch(error => {
+      return response.status(500).json({ error: error.message });
+    });
 });
 
 // -- SETUP -- //

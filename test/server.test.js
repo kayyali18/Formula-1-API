@@ -206,6 +206,87 @@ describe("Server file", () => {
     });
   });
 
+  describe("Race endpoints", () => {
+    it("should get all grand prix", done => {
+      chai
+        .request(app)
+        .get("/api/v1/races")
+        .end((error, response) => {
+          expect(response).to.have.status(200);
+          expect(response.body.length).to.equal(19);
+          done();
+        });
+    });
+
+    it.skip("should return the races that match the continent", done => {
+      chai
+        .request(app)
+        .get("/api/v1/races?continent=Europe")
+        .end((error, response) => {
+          expect(response).to.have.status(200);
+          // console.log(response.body);
+          done();
+        });
+    });
+
+    it("should return a 422 if a new race is incomplete", done => {
+      const body = { name: "Ahmad", date: null };
+      chai
+        .request(app)
+        .post("/api/v1/races")
+        .send(body)
+        .end((error, response) => {
+          expect(response).to.have.status(422);
+          done();
+        });
+    });
+
+    it("should succesfully add a new race", done => {
+      const body = {
+        name: "Dead Sea",
+        date: "Yesterday",
+        winner_id: "7",
+        winning_team_id: 2,
+        laps: 58,
+        fastest_lap: "1:09:543",
+        continent: "Asia"
+      };
+
+      chai
+        .request(app)
+        .post("/api/v1/races")
+        .send(body)
+        .end((error, response) => {
+          expect(response).to.have.status(201);
+          done();
+        });
+    });
+
+    describe("/api/v1/race - DELETE", () => {
+      it("should delete a race", done => {
+        chai
+          .request(app)
+          .delete("/api/v1/race/Belgium")
+          .end((error, response) => {
+            expect(response).to.have.status(201);
+            expect(response.body).to.equal("Success");
+            done();
+          });
+      });
+
+      it("should return 404 if race not found", done => {
+        chai
+          .request(app)
+          .delete("/api/v1/race/blahblah")
+          .end((error, response) => {
+            expect(response).to.have.status(404);
+            expect(response.body).to.equal("Race not found");
+            done();
+          });
+      });
+    });
+  });
+
   describe("Team endpoints", () => {
     it("should get all teams", done => {
       chai
@@ -235,7 +316,7 @@ describe("Server file", () => {
           });
       });
 
-      it("should return a 244 error if missing body params", done => {
+      it("should return a 422 error if missing body params", done => {
         const body = { name: "Test" };
 
         chai
@@ -243,7 +324,7 @@ describe("Server file", () => {
           .patch("/api/v1/teams/Toyota/podiums")
           .send(body)
           .end((error, response) => {
-            expect(response).to.have.status(244);
+            expect(response).to.have.status(422);
             expect(response.body).to.equal("unprocessable entity");
             done();
           });

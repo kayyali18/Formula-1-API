@@ -34,7 +34,8 @@ exports.seed = function(knex, Promise) {
                       winner_id: driver[0],
                       winning_team_id: team[0],
                       laps: "51",
-                      fastest_lap: "1:43:44.291"
+                      fastest_lap: "1:43:44.291",
+                      continent: "Europe"
                     },
                     {
                       name: "Spain",
@@ -42,7 +43,8 @@ exports.seed = function(knex, Promise) {
                       winner_id: driver[0],
                       winning_team_id: team[0],
                       laps: "66",
-                      fastest_lap: "1:35:29.972"
+                      fastest_lap: "1:35:29.972",
+                      continent: "Europe"
                     },
                     {
                       name: "France",
@@ -50,7 +52,8 @@ exports.seed = function(knex, Promise) {
                       winner_id: driver[0],
                       winning_team_id: team[0],
                       laps: "53",
-                      fastest_lap: "1:30:11.385"
+                      fastest_lap: "1:30:11.385",
+                      continent: "Europe"
                     },
                     {
                       name: "Germany",
@@ -58,7 +61,8 @@ exports.seed = function(knex, Promise) {
                       winner_id: driver[0],
                       winning_team_id: team[0],
                       laps: "67",
-                      fastest_lap: "1:32:29.845"
+                      fastest_lap: "1:32:29.845",
+                      continent: "Europe"
                     },
                     {
                       name: "Hungary",
@@ -66,7 +70,8 @@ exports.seed = function(knex, Promise) {
                       winner_id: driver[0],
                       winning_team_id: team[0],
                       laps: "70",
-                      fastest_lap: "1:37:16.427"
+                      fastest_lap: "1:37:16.427",
+                      continent: "Europe"
                     },
                     {
                       name: "Italy",
@@ -74,7 +79,8 @@ exports.seed = function(knex, Promise) {
                       winner_id: driver[0],
                       winning_team_id: team[0],
                       laps: "53",
-                      fastest_lap: "1:16:54.484"
+                      fastest_lap: "1:16:54.484",
+                      continent: "Europe"
                     },
                     {
                       name: "Singapore",
@@ -82,7 +88,8 @@ exports.seed = function(knex, Promise) {
                       winner_id: driver[0],
                       winning_team_id: team[0],
                       laps: "61",
-                      fastest_lap: "1:51:11.611"
+                      fastest_lap: "1:51:11.611",
+                      continent: "Asia"
                     },
                     {
                       name: "Russia",
@@ -90,7 +97,8 @@ exports.seed = function(knex, Promise) {
                       winner_id: driver[0],
                       winning_team_id: team[0],
                       laps: "53",
-                      fastest_lap: "1:27:25.181"
+                      fastest_lap: "1:27:25.181",
+                      continent: "Europe"
                     },
                     {
                       name: "Japan",
@@ -98,7 +106,8 @@ exports.seed = function(knex, Promise) {
                       winner_id: driver[0],
                       winning_team_id: team[0],
                       laps: "53",
-                      fastest_lap: "1:27:17.062"
+                      fastest_lap: "1:27:17.062",
+                      continent: "Asia"
                     },
                     {
                       name: "Brazil",
@@ -106,7 +115,8 @@ exports.seed = function(knex, Promise) {
                       winner_id: driver[0],
                       winning_team_id: team[0],
                       laps: "71",
-                      fastest_lap: "1:27:09.066"
+                      fastest_lap: "1:27:09.066",
+                      continent: "South America"
                     },
                     {
                       name: "Abu Dhabi",
@@ -114,7 +124,8 @@ exports.seed = function(knex, Promise) {
                       winner_id: driver[0],
                       winning_team_id: team[0],
                       laps: "55",
-                      fastest_lap: "1:39:40.382"
+                      fastest_lap: "1:39:40.382",
+                      continent: "Asia"
                     }
                   ]);
                 }),
@@ -155,7 +166,8 @@ exports.seed = function(knex, Promise) {
                       winner_id: driver[0],
                       winning_team_id: team[0],
                       laps: "56",
-                      fastest_lap: "1:34:18.643"
+                      fastest_lap: "1:34:18.643",
+                      continent: "North America"
                     }
                   ]);
                 }),
@@ -177,7 +189,8 @@ exports.seed = function(knex, Promise) {
                       winner_id: driver[0],
                       winning_team_id: team[0],
                       laps: "58",
-                      fastest_lap: "1:29:33.283"
+                      fastest_lap: "1:29:33.283",
+                      continent: "Oceania"
                     },
                     {
                       name: "Bahrain",
@@ -185,7 +198,8 @@ exports.seed = function(knex, Promise) {
                       winner_id: driver[0],
                       winning_team_id: team[0],
                       laps: "57",
-                      fastest_lap: "1:32:01.940"
+                      fastest_lap: "1:32:01.940",
+                      continent: "Asia"
                     },
                     {
                       name: "Canada",
@@ -193,7 +207,8 @@ exports.seed = function(knex, Promise) {
                       winner_id: driver[0],
                       winning_team_id: team[0],
                       laps: "68",
-                      fastest_lap: "1:28:31.377"
+                      fastest_lap: "1:28:31.377",
+                      continent: "North America"
                     },
                     {
                       name: "Great Britain",
@@ -201,7 +216,8 @@ exports.seed = function(knex, Promise) {
                       winner_id: driver[0],
                       winning_team_id: team[0],
                       laps: "52",
-                      fastest_lap: "1:27:29.784"
+                      fastest_lap: "1:27:29.784",
+                      continent: "Europe"
                     },
                     {
                       name: "Belgium",
@@ -209,7 +225,8 @@ exports.seed = function(knex, Promise) {
                       winner_id: driver[0],
                       winning_team_id: team[0],
                       laps: "44",
-                      fastest_lap: "1:23:34.476"
+                      fastest_lap: "1:23:34.476",
+                      continent: "Europe"
                     }
                   ]);
                 })
@@ -244,7 +261,8 @@ exports.seed = function(knex, Promise) {
                       winner_id: driver[0],
                       winning_team_id: team[0],
                       laps: "71",
-                      fastest_lap: "1:21:56.024"
+                      fastest_lap: "1:21:56.024",
+                      continent: "Europe"
                     },
                     {
                       name: "Mexico",
@@ -252,7 +270,8 @@ exports.seed = function(knex, Promise) {
                       winner_id: driver[0],
                       winning_team_id: team[0],
                       laps: "71",
-                      fastest_lap: "1:38:28.851"
+                      fastest_lap: "1:38:28.851",
+                      continent: "North America"
                     }
                   ]);
                 }),
@@ -274,7 +293,8 @@ exports.seed = function(knex, Promise) {
                       winner_id: driver[0],
                       winning_team_id: team[0],
                       laps: "56",
-                      fastest_lap: "1:35:36.380"
+                      fastest_lap: "1:35:36.380",
+                      continent: "Asia"
                     },
                     {
                       name: "Monaco",
@@ -282,7 +302,8 @@ exports.seed = function(knex, Promise) {
                       winner_id: driver[0],
                       winning_team_id: team[0],
                       laps: "78",
-                      fastest_lap: "1:42:54.807"
+                      fastest_lap: "1:42:54.807",
+                      continent: "Europe"
                     }
                   ]);
                 })
