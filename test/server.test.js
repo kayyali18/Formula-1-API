@@ -77,7 +77,6 @@ describe("Server file", () => {
           .patch("/api/v1/drivers/30/team")
           .send(body)
           .end((error, response) => {
-            console.log("error", response.body);
             expect(response).to.have.status(404);
             done();
           });
@@ -150,7 +149,6 @@ describe("Server file", () => {
             .request(app)
             .delete("/api/v1/drivers/4")
             .end((error, response) => {
-              console.log(response.error);
               expect(response).to.have.status(201);
               expect(response.body).to.equal(expected);
               done();
@@ -186,40 +184,23 @@ describe("Server file", () => {
 
     describe("api/v1/teams/:team_id/podiums", () => {
       it("should update team podiums", done => {
-        const team = {
-          name: "Toyota",
-          podiums: 2,
-          titles: 3
-        };
-
         const body = { podiums: 3 };
 
-        const expected = [{ ...team, podiums: 3 }];
-
-        app.locals.teams = [team];
+        const expected = 1;
 
         chai
           .request(app)
-          .patch("/api/v1/teams/Toyota/podiums")
+          .patch("/api/v1/teams/2/podiums")
           .send(body)
           .end((error, response) => {
             expect(response).to.have.status(201);
-            expect(app.locals.teams).to.deep.equal(expected); //THIS SHOULD EVALUATE THE RESPONSE OBJECT
+            expect(response.body).to.equal(1);
             done();
-            app.locals.teams = [];
           });
       });
 
       it("should return a 244 error if missing body params", done => {
-        const team = {
-          name: "Toyota",
-          podiums: 2,
-          titles: 3
-        };
-
         const body = { name: "Test" };
-
-        app.locals.teams = [team];
 
         chai
           .request(app)
@@ -227,101 +208,67 @@ describe("Server file", () => {
           .send(body)
           .end((error, response) => {
             expect(response).to.have.status(244);
+            expect(response.body).to.equal("unprocessable entity");
             done();
-            app.locals.teams = [];
           });
       });
 
       it("should return 404 if no team is found", done => {
-        const team = {
-          name: "Toyota",
-          podiums: 2,
-          titles: 3
-        };
-
         const body = { podiums: 4 };
-
-        app.locals.teams = [team];
 
         chai
           .request(app)
-          .patch("/api/v1/teams/Ford/podiums")
+          .patch("/api/v1/teams/30/podiums")
           .send(body)
           .end((error, response) => {
             expect(response).to.have.status(404);
             done();
-            app.locals.teams = [];
           });
       });
     });
 
     describe("api/v1/teams/:team_id/titles", () => {
       it("should update team titles", done => {
-        const team = {
-          name: "Toyota",
-          podiums: 2,
-          titles: 3
-        };
-
         const body = { titles: 3 };
-
-        app.locals.teams = [team];
+        const expected = 1;
 
         chai
           .request(app)
-          .patch("/api/v1/teams/Toyota/titles")
+          .patch("/api/v1/teams/2/titles")
           .send(body)
           .end((error, response) => {
             expect(response).to.have.status(201);
-
+            expect(response.body).to.equal(expected);
             done();
-            app.locals.teams = [];
           });
       });
 
       it("should return 244 if missing titles", done => {
-        const team = {
-          name: "Toyota",
-          podiums: 2,
-          titles: 3
-        };
-
         const body = { pants: 3 };
-
-        app.locals.teams = [team];
 
         chai
           .request(app)
-          .patch("/api/v1/teams/Toyota/titles")
+          .patch("/api/v1/teams/2/titles")
           .send(body)
           .end((error, response) => {
             expect(response).to.have.status(244);
-
+            expect(response.body).to.equal("Unprocessable entity");
             done();
             app.locals.teams = [];
           });
       });
 
       it("should return 404 if team does not exist", done => {
-        const team = {
-          name: "Toyota",
-          podiums: 2,
-          titles: 3
-        };
-
         const body = { titles: 4 };
-
-        app.locals.teams = [team];
 
         chai
           .request(app)
-          .patch("/api/v1/teams/Ford/titles")
+          .patch("/api/v1/teams/44/titles")
           .send(body)
           .end((error, response) => {
             expect(response).to.have.status(404);
 
             done();
-            app.locals.teams = [];
           });
       });
     });
