@@ -122,27 +122,25 @@ app.post("/api/v1/team/:team_id/drivers", (request, response) => {
 app.delete("/api/v1/drivers/:driver_id", (request, response) => {
   const { driver_id } = request.params;
 
-  const driver = app.locals.drivers.find(driver => {
-    return driver.id === driver_id;
-  });
+  database("races")
+    .where("winner_id", driver_id)
+    .del()
+    .then(() => {
+      database("drivers")
+        .where("id", driver_id)
+        .del()
+        .then(driver => {
+          if (driver === 0) {
+            return response.status(404).json("Driver not found");
+          }
+          return response.status(201).json(driver);
+        })
+        .catch(error => {
+          return response.status(500).json({ error: error.message });
+        });
+    });
 
-  if (!driver) return response.status(404).send("Driver not found");
-
-  app.locals.drivers = app.locals.drivers.filter(driver => {
-    return driver.id !== driver_id;
-  });
-
-  return response.status(201).send(`Delete driver ${driver}`);
-
-  // database("drivers")
-  //   .where(driver_id, id)
-  //   .del()
-  //   .then(driver => {
-  //     response.status(201).json(`Succesfully deleted ${driver}`);
-  //   })
-  //   .catch(error => {
-  //     response.status(500).json({ error: error.message });
-  //   });
+  // if (!driver_id) return response.status(404).send("Driver not found");
 });
 
 // -- TEAMS -- //

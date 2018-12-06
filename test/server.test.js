@@ -144,21 +144,15 @@ describe("Server file", () => {
 
       describe("/api/v1/drivers/:driver_id - delete", () => {
         it("should delete a driver", done => {
-          const driver = {
-            id: "4",
-            name: "Steve",
-            team_id: "Mclaren",
-            country: "UK",
-            points: 80
-          };
-
-          app.locals.drivers = [driver];
+          const expected = 1;
 
           chai
             .request(app)
             .delete("/api/v1/drivers/4")
             .end((error, response) => {
+              console.log(response.error);
               expect(response).to.have.status(201);
+              expect(response.body).to.equal(expected);
               done();
             });
         });
