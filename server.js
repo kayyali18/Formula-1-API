@@ -265,30 +265,28 @@ app.delete("/api/v1/teams/:team_id", (request, response) => {
 // -- RACES -- //
 
 app.get("/api/v1/races", (request, response) => {
-  database("races")
-    .select()
-    .then(races => {
-      return response.status(200).json(races);
-    })
-    .catch(error => {
-      return response.status(500).json({ error });
-    });
-});
-
-app.get("/api/v1/races?continent=continent_name", (request, response) => {
-  // requires - query
   const { continent } = request.query;
-  console.log(continent);
 
-  database("races")
-    .where("continent", continent)
-    .select()
-    .then(races => {
-      return response.status(200).json(races);
-    })
-    .catch(error => {
-      return response.status(500).json({ error });
-    });
+  if (!continent) {
+    database("races")
+      .select()
+      .then(races => {
+        return response.status(200).json(races);
+      })
+      .catch(error => {
+        return response.status(500).json({ error });
+      });
+  } else {
+    database("races")
+      .where("continent", continent)
+      .select()
+      .then(races => {
+        return response.status(200).json(races);
+      })
+      .catch(error => {
+        return response.status(500).json({ error });
+      });
+  }
 });
 
 app.post("/api/v1/races", (request, response) => {

@@ -218,13 +218,14 @@ describe("Server file", () => {
         });
     });
 
-    it.skip("should return the races that match the continent", done => {
+    it("should return the races that match the continent", done => {
       chai
         .request(app)
         .get("/api/v1/races?continent=Europe")
         .end((error, response) => {
           expect(response).to.have.status(200);
-          // console.log(response.body);
+          expect(response.body.length).to.equal(10);
+          console.log(response.body);
           done();
         });
     });
