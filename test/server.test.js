@@ -529,7 +529,7 @@ describe("Server file", () => {
           .get("/api/v1/races/drivers/1")
           .end((error, response) => {
             expect(response.body);
-            expect(response.body.length).to.equal(11);
+            expect(response.body.length).to.equal(1);
             expect(response).to.have.status(201);
             done();
           });
