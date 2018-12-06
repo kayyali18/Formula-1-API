@@ -158,22 +158,12 @@ describe("Server file", () => {
         });
 
         it("should return 404 if driver not found", done => {
-          const driver = {
-            id: "4",
-            name: "Steve",
-            team_id: "Mclaren",
-            country: "UK",
-            points: 80
-          };
-
-          app.locals.drivers = [driver];
-
           chai
             .request(app)
-            .delete("/api/v1/driver/14")
+            .delete("/api/v1/driver/30")
             .end((error, response) => {
               expect(response).to.have.status(404);
-              expect(app.locals.drivers).to.deep.equal([driver]); //THIS SHOULD EVALUATE THE RESPONSE OBJECT
+
               done();
             });
         });
