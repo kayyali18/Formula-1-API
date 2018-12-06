@@ -31,13 +31,13 @@ app.patch("/api/v1/drivers/:driver_id/team", (request, response) => {
   const { driver_id } = request.params;
   const { team_id } = request.body;
 
-  if (typeof team_id !== "number") {
+  if (typeof team_id !== "number" || !team_id) {
     return response.status(422).json(`${team_id} is not a number`);
   }
 
   database("drivers")
     .where("id", driver_id)
-    .update({ team_id: team_id })
+    .update({ team_id })
     .then(driver => {
       if (driver === 0) {
         return response.status(404).json("Driver not found");
@@ -169,7 +169,7 @@ app.patch("/api/v1/teams/:team_id/podiums", (request, response) => {
   const { team_id } = request.params;
 
   if (!podiums || !team_id) {
-    return response.status(244).json("unprocessable entity");
+    return response.status(422).json("unprocessable entity");
   }
 
   database("teams")
