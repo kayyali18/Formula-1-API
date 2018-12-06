@@ -215,19 +215,14 @@ app.post("/api/v1/teams", (request, response) => {
     titles: 0
   };
 
-  app.locals.teams = [...app.locals.teams, newTeam];
-
-  return response.status(201).json(`Added team ${name}`);
-
-  // database("teams")
-  //   .insert(team, "id")
-  //   .then(newTeam => {
-  //     response.status(201).send(`Added ${newTeam} successfully`);
-  //   })
-  //   .catch(error => {
-  //     response.status(500).json({ error });
-  //   });
-  // requires - name, standing, podium finishes, titles
+  database("teams")
+    .insert(newTeam, "id")
+    .then(newTeam => {
+      response.status(201).json(`Added team ${name}`);
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
 });
 
 app.delete("/api/v1/teams/:team_name", (request, response) => {
