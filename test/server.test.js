@@ -129,17 +129,7 @@ describe("Server file", () => {
         });
 
         it("should return 422 if the body has no points", done => {
-          const driver = {
-            id: "4",
-            name: "Steve",
-            team_id: "Mclaren",
-            country: "UK",
-            points: 80
-          };
-
           const body = { carrots: 89 };
-
-          app.locals.drivers = [driver];
 
           chai
             .request(app)
@@ -148,7 +138,6 @@ describe("Server file", () => {
             .end((error, response) => {
               expect(response).to.have.status(422);
               done();
-              app.locals.driver = [];
             });
         });
       });
