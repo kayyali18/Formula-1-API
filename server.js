@@ -31,29 +31,22 @@ app.patch("/api/v1/drivers/:driver_id/team", (request, response) => {
   const { driver_id } = request.params;
   const { team_id } = request.body;
 
-  const driver = app.locals.drivers.find(driver => driver.id == driver_id);
-
   if (typeof team_id !== "number") {
-    return response.status(422).json(`${team_id} is not a string`);
+    return response.status(422).json(`${team_id} is not a number`);
   }
 
-  if (!driver) {
-    return response.status(404).json({ error: "Driver not found" });
-  }
   database("drivers")
-    .where(driver_id, "id")
-    .update({ team })
+    .where("id", driver_id)
+    .update({ team_id: team_id })
     .then(driver => {
-      if (driver) {
-        response.status(200).json(driver);
-      } else {
-        response.status(404).json({ error });
+      if (driver === 0) {
+        return response.status(404).json("Driver not found");
       }
+      return response.status(201).json(driver);
     })
     .catch(error => {
-      response.status(500).json({ error });
+      return response.status(500).json({ error });
     });
-  // // requires - valid param, body
 });
 
 app.get("api/v1/drivers/:driver_name", (request, response) => {

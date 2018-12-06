@@ -1,13 +1,31 @@
 process.env.NODE_ENV = "test";
-
 const chai = require("chai");
 const expect = chai.expect;
 const chaiHttp = require("chai-http");
 chai.use(chaiHttp);
 const app = require("../server.js");
+const configuration = require("../knexfile")["test"];
+const database = require("knex")(configuration);
 
 describe("Server file", () => {
   describe("/api/v1/drivers", () => {
+    beforeEach(done => {
+      database.migrate
+        .rollback()
+        .then(() => database.migrate.latest())
+        .then(() => database.seed.run())
+        .then(() => done());
+    });
+
+    after(done => {
+      database.migrate
+        .rollback()
+        .then(() => database.migrate.latest())
+        .then(() => database.seed.run())
+        .then(() => console.log("Testing complete. Db rolled back."))
+        .then(() => done());
+    });
+
     it("should return a 200 status code", done => [
       chai
         .request(app)
@@ -39,7 +57,7 @@ describe("Server file", () => {
     describe("/api/v1/drivers/:driver_id/team", () => {
       it("should patch team", done => {
         const body = { team_id: 2 };
-        const expected = 2;
+        const expected = 1;
         chai
           .request(app)
           .patch("/api/v1/drivers/1/team")
@@ -47,60 +65,42 @@ describe("Server file", () => {
           .end((error, response) => {
             expect(response).to.have.status(201);
             expect(response.body).to.equal(expected); //THIS SHOULD EVALUATE THE RESPONSE OBJECT
+
             done();
-            app.locals.drivers = [];
           });
       });
 
       it("should return 404 if the driver does not exist", done => {
-        const driver = {
-          id: 7,
-          name: "Kimi",
-          team_id: "Ferrari",
-          country: "Finland"
-        };
+        const body = { team_id: 2 };
 
-        const body = { team_id: "Sauber" };
+        chai
+          .request(app)
+          .patch("/api/v1/drivers/30/team")
+          .send(body)
+          .end((error, response) => {
+            console.log("error", response.body);
+            expect(response).to.have.status(404);
 
-        app.locals.drivers = [driver];
+            done();
+          });
+      });
+
+      it("should return 422 if the team_id is not a number", done => {
+        const body = { team_id: "Hello" };
 
         chai
           .request(app)
           .patch("/api/v1/drivers/1/team")
           .send(body)
           .end((error, response) => {
-            expect(response).to.have.status(404);
-            expect(response.body).to.deep.equal({ error: "Driver not found" });
-            done();
-          });
-      });
-
-      it("should return 422 if the team_id is not a string", done => {
-        const driver = {
-          id: 7,
-          name: "Kimi",
-          team_id: "Ferrari",
-          country: "Finland"
-        };
-
-        const body = { team_id: 1 };
-
-        app.locals.drivers = [driver];
-
-        chai
-          .request(app)
-          .patch("/api/v1/drivers/hello/team")
-          .send(body)
-          .end((error, response) => {
             expect(response).to.have.status(422);
-            expect(response.body).to.equal("1 is not a string");
+            expect(response.body).to.equal("Hello is not a number");
             done();
-            app.locals.drivers = [];
           });
       });
 
       describe("/api/v1/drivers/:driver_id/points", () => {
-        it("should update points properly", done => {
+        it.only("should update points properly", done => {
           const driver = {
             id: "4",
             name: "Steve",
