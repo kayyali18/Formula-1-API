@@ -8,27 +8,18 @@ const configuration = require("../knexfile")["test"];
 const database = require("knex")(configuration);
 
 describe("Server file", () => {
-  beforeEach(done => {
-    database.migrate
-      .rollback()
-      .then(() => database.migrate.latest())
-      .then(() => database.seed.run())
-      .then(() => done());
-  });
+  // after(done => {
+  //   database.migrate
+  //     .rollback()
+  //     .then(() => database.migrate.latest())
+  //     .then(() => database.seed.run())
+  //     .then(() =>
+  //       console.log("Testing complete. Database rolled back and reseeded")
+  //     )
+  //     .then(() => done());
+  // });
 
   describe("/api/v1/drivers", () => {
-    it("should return a 200 status code", done => [
-      chai
-        .request(app)
-        .get("/api/v1/drivers")
-        .end((error, response) => {
-          expect(response).to.have.status(200);
-          done();
-        })
-    ]);
-  });
-
-  describe("driver endpoints", () => {
     beforeEach(done => {
       database.migrate
         .rollback()
@@ -37,17 +28,29 @@ describe("Server file", () => {
         .then(() => done());
     });
 
-    after(done => {
-      database.migrate
-        .rollback()
-        .then(() => database.migrate.latest())
-        .then(() => database.seed.run())
-        .then(() =>
-          console.log("Testing complete. Database rolled back and reseeded")
-        )
-        .then(() => done());
-    });
+    it("should return a 200 status code", done => {
+      const expectedOne = {
+        id: 1,
+        name: "Bottas",
+        points: 247,
+        country: "FIN",
+        team_id: 1
+      };
 
+      const expectedTwo = {};
+
+      chai
+        .request(app)
+        .get("/api/v1/drivers")
+        .end((error, response) => {
+          expect(response).to.have.status(200);
+          // console.log(response.body);
+          done();
+        });
+    });
+  });
+
+  describe("Driver endpoints", () => {
     describe("/api/v1/drivers:team_id - get", () => {
       it("should get drivers by team_id", done => {
         const expected = 2;
@@ -215,25 +218,6 @@ describe("Server file", () => {
       });
 
       describe("/api/v1/drivers/:driver_id - delete", () => {
-        beforeEach(done => {
-          database.migrate
-            .rollback()
-            .then(() => database.migrate.latest())
-            .then(() => database.seed.run())
-            .then(() => done());
-        });
-
-        after(done => {
-          database.migrate
-            .rollback()
-            .then(() => database.migrate.latest())
-            .then(() => database.seed.run())
-            .then(() =>
-              console.log("Testing complete. Database rolled back and reseeded")
-            )
-            .then(() => done());
-        });
-
         it("should delete a driver", done => {
           const expected = 1;
 
@@ -269,18 +253,6 @@ describe("Server file", () => {
         .then(() => database.seed.run())
         .then(() => done());
     });
-
-    after(done => {
-      database.migrate
-        .rollback()
-        .then(() => database.migrate.latest())
-        .then(() => database.seed.run())
-        .then(() =>
-          console.log("Testing complete. Database rolled back and reseeded")
-        )
-        .then(() => done());
-    });
-
     it("should get all grand prix", done => {
       chai
         .request(app)
@@ -362,6 +334,13 @@ describe("Server file", () => {
   });
 
   describe("Team endpoints", () => {
+    beforeEach(done => {
+      database.migrate
+        .rollback()
+        .then(() => database.migrate.latest())
+        .then(() => database.seed.run())
+        .then(() => done());
+    });
     it("should get all teams", done => {
       chai
         .request(app)
@@ -523,14 +502,14 @@ describe("Server file", () => {
           });
       });
 
-      it("should return races won by a specific driver", done => {
+      it.only("should return races won by a specific driver", done => {
         chai
           .request(app)
           .get("/api/v1/races/drivers/1")
           .end((error, response) => {
-            expect(response.body);
-            expect(response.body.length).to.equal(1);
             expect(response).to.have.status(201);
+            expect(response.body.length).to.equal(11);
+
             done();
           });
       });
