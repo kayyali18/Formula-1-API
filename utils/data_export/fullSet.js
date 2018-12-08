@@ -135,7 +135,6 @@ const fullSet = [
           }
         ]
       },
-      null,
       {
         name: "Räikkönen",
         points: "251",
@@ -218,8 +217,8 @@ const fullSet = [
       { name: "Grosjean", points: "37", nationality: "FRA", wonRaces: [] },
       { name: "Magnussen", points: "56", nationality: "DEN", wonRaces: [] }
     ],
-    podiums: "N/A",
-    titles: "N/A",
+    podiums: "0",
+    titles: "0",
     name: "Haas"
   },
   {
@@ -236,8 +235,8 @@ const fullSet = [
       { name: "Perez", points: "62", nationality: "MEX", wonRaces: [] },
       { name: "Ocon", points: "49", nationality: "FRA", wonRaces: [] }
     ],
-    podiums: "N/A",
-    titles: "N/A",
+    podiums: "0",
+    titles: "0",
     name: "Force India"
   },
   {
@@ -246,7 +245,7 @@ const fullSet = [
       { name: "Leclerc", points: "39", nationality: "MON", wonRaces: [] }
     ],
     podiums: "27",
-    titles: "N/A",
+    titles: "0",
     name: "Sauber"
   },
   {
@@ -255,7 +254,7 @@ const fullSet = [
       { name: "Hartley", points: "4", nationality: "NZL", wonRaces: [] }
     ],
     podiums: "1",
-    titles: "N/A",
+    titles: "0",
     name: "Toro Rosso"
   },
   {
@@ -268,3 +267,5 @@ const fullSet = [
     name: "Williams"
   }
 ];
+
+module.exports = fullSet;

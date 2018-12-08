@@ -13,7 +13,7 @@ exports.seed = function(knex, Promise) {
               {
                 name: team.name,
                 podiums: team.podiums,
-                title: team.titles
+                titles: team.titles
               },
               "id"
             )

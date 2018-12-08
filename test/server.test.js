@@ -8,16 +8,16 @@ const configuration = require("../knexfile")["test"];
 const database = require("knex")(configuration);
 
 describe("Server file", () => {
-  // after(done => {
-  //   database.migrate
-  //     .rollback()
-  //     .then(() => database.migrate.latest())
-  //     .then(() => database.seed.run())
-  //     .then(() =>
-  //       console.log("Testing complete. Database rolled back and reseeded")
-  //     )
-  //     .then(() => done());
-  // });
+  after(done => {
+    database.migrate
+      .rollback()
+      .then(() => database.migrate.latest())
+      .then(() => database.seed.run())
+      .then(() =>
+        console.log("Testing complete. Database rolled back and reseeded")
+      )
+      .then(() => done());
+  });
 
   describe("/api/v1/drivers", () => {
     beforeEach(done => {
@@ -259,7 +259,7 @@ describe("Server file", () => {
         .get("/api/v1/races")
         .end((error, response) => {
           expect(response).to.have.status(200);
-          expect(response.body.length).to.equal(19);
+          expect(response.body.length).to.equal(21);
           done();
         });
     });
@@ -270,7 +270,7 @@ describe("Server file", () => {
         .get("/api/v1/races?continent=Europe")
         .end((error, response) => {
           expect(response).to.have.status(200);
-          expect(response.body.length).to.equal(10);
+          expect(response.body.length).to.equal(11);
           done();
         });
     });
@@ -502,15 +502,31 @@ describe("Server file", () => {
           });
       });
 
-      it.only("should return races won by a specific driver", done => {
+      it("should return races won by a specific driver", done => {
+        let driver;
+
         chai
           .request(app)
-          .get("/api/v1/races/drivers/1")
-          .end((error, response) => {
-            expect(response).to.have.status(201);
-            expect(response.body.length).to.equal(11);
+          .get("/api/v1/drivers")
+          .then(response => {
+            const drivers = response.body;
 
-            done();
+            const hamilton = response.body.find(driver => {
+              return driver.name === "Hamilton";
+            });
+
+            return hamilton.id;
+          })
+          .then(id => {
+            chai
+              .request(app)
+              .get(`/api/v1/races/drivers/${id}`)
+              .end((error, response) => {
+                expect(response).to.have.status(201);
+                expect(response.body.length).to.equal(11);
+
+                done();
+              });
           });
       });
 
