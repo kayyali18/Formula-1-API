@@ -30,7 +30,6 @@ exports.seed = function(knex, Promise) {
       );
     });
 };
-1;
 
 const addDriver = (knex, driver, team_id) => {
   return knex("drivers")
