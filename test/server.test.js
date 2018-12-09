@@ -30,21 +30,31 @@ describe("Server file", () => {
 
     it("should return a 200 status code", done => {
       const expectedOne = {
-        id: 1,
         name: "Bottas",
         points: 247,
-        country: "FIN",
-        team_id: 1
+        country: "FIN"
       };
 
-      const expectedTwo = {};
+      const expectedTwo = {
+        name: "Magnussen",
+        points: 56,
+        country: "DEN"
+      };
 
       chai
         .request(app)
         .get("/api/v1/drivers")
         .end((error, response) => {
           expect(response).to.have.status(200);
-          // console.log(response.body);
+          const bottas = response.body.find(driver => driver.name === "Bottas");
+          expect(bottas.points).to.equal(expectedOne.points);
+          expect(bottas.country).to.equal(expectedOne.country);
+          const magnussen = response.body.find(
+            driver => driver.name === "Magnussen"
+          );
+          expect(magnussen.points).to.equal(expectedTwo.points);
+          expect(magnussen.country).to.equal(expectedTwo.country);
+          expect(response.body.length).to.equal(20);
           done();
         });
     });
@@ -52,16 +62,37 @@ describe("Server file", () => {
 
   describe("Driver endpoints", () => {
     describe("/api/v1/drivers:team_id - get", () => {
-      it("should get drivers by team_id", done => {
+      it.only("should get drivers by team_id", done => {
         const expected = 2;
 
         chai
           .request(app)
-          .get("/api/v1/drivers/team/1")
-          .end((error, response) => {
-            expect(response).to.have.status(201);
-            expect(response.body.length).to.equal(expected);
-            done();
+          .get("/api/v1/teams")
+          .then(response => {
+            const teams = response.body;
+
+            const mercedes = teams.find(team => team.name === "Mercedes");
+
+            return mercedes.id;
+          })
+          .then(id => {
+            chai
+              .request(app)
+              .get(`/api/v1/drivers/team/${id}`)
+              .end((error, response) => {
+                expect(response).to.have.status(201);
+                expect(response.body.length).to.equal(2);
+
+                const drivers = response.body;
+
+                if (drivers[0].name === "Bottas") {
+                  expect(drivers[1].name).to.equal("Hamilton");
+                } else {
+                  expect(drivers[0].name).to.equal("Hamilton");
+                  expect(drivers[1].name).to.equal("Bottas");
+                }
+                done();
+              });
           });
       });
 
