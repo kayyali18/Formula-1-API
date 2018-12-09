@@ -62,7 +62,7 @@ describe("Server file", () => {
 
   describe("Driver endpoints", () => {
     describe("/api/v1/drivers:team_id - get", () => {
-      it.only("should get drivers by team_id", done => {
+      it("should get drivers by team_id", done => {
         const expected = 2;
 
         chai
@@ -113,7 +113,8 @@ describe("Server file", () => {
     describe("/api/v1/drivers/:driver_id/team", () => {
       it("should patch team", done => {
         const body = { team_id: 2 };
-        const expected = 1;
+        const expected = "1 driver switched to team team_id #2";
+
         chai
           .request(app)
           .patch("/api/v1/drivers/1/team")
@@ -128,12 +129,15 @@ describe("Server file", () => {
       it("should return 404 if the driver does not exist", done => {
         const body = { team_id: 2 };
 
+        const expected = "Driver not found";
+
         chai
           .request(app)
           .patch("/api/v1/drivers/30/team")
           .send(body)
           .end((error, response) => {
             expect(response).to.have.status(404);
+            expect(response.body).to.equal(expected);
             done();
           });
       });
@@ -156,7 +160,7 @@ describe("Server file", () => {
         it("should update points properly", done => {
           const body = { points: 89 };
 
-          const expected = "1";
+          const expected = "Changed points of 1 driver to 89";
 
           chai
             .request(app)
@@ -164,7 +168,7 @@ describe("Server file", () => {
             .send(body)
             .end((error, response) => {
               expect(response).to.have.status(201);
-              expect(response.text).to.equal(expected);
+              expect(response.body).to.equal(expected);
               done();
             });
         });
@@ -172,12 +176,15 @@ describe("Server file", () => {
         it("should return 404 if the driver is not found", done => {
           const body = { points: 89 };
 
+          const expected = "Driver not found";
+
           chai
             .request(app)
             .patch("/api/v1/drivers/21/points")
             .send(body)
             .end((error, response) => {
               expect(response).to.have.status(404);
+              expect(response.body).to.equal(expected);
               done();
             });
         });
@@ -185,12 +192,16 @@ describe("Server file", () => {
         it("should return 422 if the body has no points", done => {
           const body = { carrots: 89 };
 
+          const expected =
+            "Unprocessable entity - please enter a number for points";
+
           chai
             .request(app)
             .patch("/api/v1/drivers/4/points")
             .send(body)
             .end((error, response) => {
               expect(response).to.have.status(422);
+              expect(response.body).to.equal(expected);
               done();
             });
         });
@@ -203,13 +214,15 @@ describe("Server file", () => {
             country: "USA"
           };
 
+          expected = "Added a new driver with id #21";
+
           chai
             .request(app)
             .post("/api/v1/team/5/drivers")
             .send(driver)
             .end((error, response) => {
               expect(response).to.have.status(201);
-              expect(response.body).to.equal(21);
+              expect(response.body).to.equal(expected);
               done();
             });
         });
@@ -250,7 +263,7 @@ describe("Server file", () => {
 
       describe("/api/v1/drivers/:driver_id - delete", () => {
         it("should delete a driver", done => {
-          const expected = 1;
+          const expected = "Deleted 1 driver with id #4";
 
           chai
             .request(app)
@@ -263,12 +276,13 @@ describe("Server file", () => {
         });
 
         it("should return 404 if driver not found", done => {
+          const expected = "Not Found";
           chai
             .request(app)
             .delete("/api/v1/driver/30")
             .end((error, response) => {
               expect(response).to.have.status(404);
-
+              expect(response.res.statusMessage).to.equal(expected);
               done();
             });
         });
@@ -291,6 +305,16 @@ describe("Server file", () => {
         .end((error, response) => {
           expect(response).to.have.status(200);
           expect(response.body.length).to.equal(21);
+          expect(response.body[0].name).to.be.a("string");
+          expect(response.body[1].winning_team_id).to.be.a("number");
+          expect(response.body[2].winner_id).to.be.a("number");
+          expect(response.body[3].date).to.be.a("string");
+          expect(response.body[4].continent).to.be.a("string");
+          expect(response.body[5].laps).to.be.a("number");
+          expect(response.body[6].id).to.be.a("number");
+          expect(response.body[7].fastest_lap).to.be.a("string");
+          expect(response.body[8].created_at).to.be.a("string");
+          expect(response.body[9].updated_at).to.be.a("string");
           done();
         });
     });
@@ -302,6 +326,16 @@ describe("Server file", () => {
         .end((error, response) => {
           expect(response).to.have.status(200);
           expect(response.body.length).to.equal(11);
+          expect(response.body[0].name).to.be.a("string");
+          expect(response.body[1].winning_team_id).to.be.a("number");
+          expect(response.body[2].winner_id).to.be.a("number");
+          expect(response.body[3].date).to.be.a("string");
+          expect(response.body[4].continent).to.be.a("string");
+          expect(response.body[5].laps).to.be.a("number");
+          expect(response.body[6].id).to.be.a("number");
+          expect(response.body[7].fastest_lap).to.be.a("string");
+          expect(response.body[8].created_at).to.be.a("string");
+          expect(response.body[9].updated_at).to.be.a("string");
           done();
         });
     });
@@ -314,6 +348,7 @@ describe("Server file", () => {
         .send(body)
         .end((error, response) => {
           expect(response).to.have.status(422);
+          expect(response.body).to.equal("unprocessable entity");
           done();
         });
     });
@@ -335,6 +370,7 @@ describe("Server file", () => {
         .send(body)
         .end((error, response) => {
           expect(response).to.have.status(201);
+          expect(response.body).to.equal("Added race Dead Sea");
           done();
         });
     });
@@ -379,6 +415,12 @@ describe("Server file", () => {
         .end((error, response) => {
           expect(response).to.have.status(200);
           expect(response.body.length).to.equal(10); //THIS SHOULD EVALUATE THE RESPONSE OBJECT
+          expect(response.body[0].id).to.be.a("number");
+          expect(response.body[1].titles).to.be.a("number");
+          expect(response.body[2].created_at).to.be.a("string");
+          expect(response.body[3].updated_at).to.be.a("string");
+          expect(response.body[4].podiums).to.be.a("number");
+          expect(response.body[5].name).to.be.a("string");
           done();
         });
     });
@@ -387,7 +429,7 @@ describe("Server file", () => {
       it("should update team podiums", done => {
         const body = { podiums: 3 };
 
-        const expected = 1;
+        const expected = "Changed 1 podium total to 3";
 
         chai
           .request(app)
@@ -395,7 +437,8 @@ describe("Server file", () => {
           .send(body)
           .end((error, response) => {
             expect(response).to.have.status(201);
-            expect(response.body).to.equal(1);
+            expect(response.body).to.equal(expected);
+            expect;
             done();
           });
       });
@@ -417,12 +460,15 @@ describe("Server file", () => {
       it("should return 404 if no team is found", done => {
         const body = { podiums: 4 };
 
+        const expected = '"Driver not found"';
+
         chai
           .request(app)
           .patch("/api/v1/teams/30/podiums")
           .send(body)
           .end((error, response) => {
             expect(response).to.have.status(404);
+            expect(response.error.text).to.equal(expected);
             done();
           });
       });
@@ -431,7 +477,7 @@ describe("Server file", () => {
     describe("api/v1/teams/:team_id/titles", () => {
       it("should update team titles", done => {
         const body = { titles: 3 };
-        const expected = 1;
+        const expected = "Changed 1 team's titles to 3";
 
         chai
           .request(app)
@@ -461,13 +507,15 @@ describe("Server file", () => {
       it("should return 404 if team does not exist", done => {
         const body = { titles: 4 };
 
+        const expected = '"Team not found"';
+
         chai
           .request(app)
           .patch("/api/v1/teams/44/titles")
           .send(body)
           .end((error, response) => {
             expect(response).to.have.status(404);
-
+            expect(response.error.text).to.equal(expected);
             done();
           });
       });
@@ -521,14 +569,14 @@ describe("Server file", () => {
       });
 
       it("should return 404 if the team does not exist", done => {
-        const expected = 0;
+        const expected = '"Team not found"';
 
         chai
           .request(app)
           .delete("/api/v1/teams/33")
           .end((error, response) => {
             expect(response).to.have.status(404);
-            expect(response.body).to.equal(expected);
+            expect(response.error.text).to.equal(expected);
             done();
           });
       });
@@ -562,11 +610,13 @@ describe("Server file", () => {
       });
 
       it("should return 204 if no races have been won by the specificed driver", done => {
+        const expected = "No Content";
         chai
           .request(app)
           .get("/api/v1/races/drivers/100")
           .end((error, response) => {
             expect(response).to.have.status(204);
+            expect(response.res.statusMessage).to.equal(expected);
             done();
           });
       });

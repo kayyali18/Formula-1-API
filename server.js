@@ -42,7 +42,9 @@ app.patch("/api/v1/drivers/:driver_id/team", (request, response) => {
       if (driver === 0) {
         return response.status(404).json("Driver not found");
       }
-      return response.status(201).json(driver);
+      return response
+        .status(201)
+        .json(`${driver} driver switched to team team_id #${team_id}`);
     })
     .catch(error => {
       return response.status(500).json({ error });
@@ -72,10 +74,13 @@ app.patch("/api/v1/drivers/:driver_id/points", (request, response) => {
   const { driver_id } = request.params;
   const { points } = request.body;
 
-  if (!points) return response.status(422).send("Unprocessable entity");
+  if (!points)
+    return response
+      .status(422)
+      .json("Unprocessable entity - please enter a number for points");
 
   if (!driver_id) {
-    return response.status(404).send("Driver not found");
+    return response.status(404).body("Driver not found");
   }
 
   database("drivers")
@@ -85,7 +90,9 @@ app.patch("/api/v1/drivers/:driver_id/points", (request, response) => {
       if (driver === 0) {
         return response.status(404).json("Driver not found");
       }
-      return response.status(201).json(driver);
+      return response
+        .status(201)
+        .json(`Changed points of ${driver} driver to ${points}`);
     })
     .catch(error => {
       return response.status(500).json({ error });
@@ -114,7 +121,9 @@ app.post("/api/v1/team/:team_id/drivers", (request, response) => {
         database("drivers")
           .insert(driver, "id")
           .then(driver_id => {
-            return response.status(201).json(driver_id[0]);
+            return response
+              .status(201)
+              .json(`Added a new driver with id #${driver_id[0]}`);
           })
           .catch(error => {
             return response.status(500).json({ error: error.message });
@@ -137,7 +146,9 @@ app.delete("/api/v1/drivers/:driver_id", (request, response) => {
           if (driver === 0) {
             return response.status(404).json("Driver not found");
           }
-          return response.status(201).json(driver);
+          return response
+            .status(201)
+            .json(`Deleted ${driver} driver with id #${driver_id}`);
         })
         .catch(error => {
           return response.status(500).json({ error: error.message });
@@ -173,9 +184,11 @@ app.patch("/api/v1/teams/:team_id/podiums", (request, response) => {
     .update({ podiums })
     .then(driver => {
       if (driver === 0) {
-        return response.status(404).json("Driver does not exist");
+        return response.status(404).json("Driver not found");
       } else {
-        return response.status(201).json(driver);
+        return response
+          .status(201)
+          .json(`Changed ${driver} podium total to ${podiums}`);
       }
     })
     .catch(error => {
@@ -198,7 +211,9 @@ app.patch("/api/v1/teams/:team_id/titles", (request, response) => {
       if (team === 0) {
         return response.status(404).json("Team not found");
       } else {
-        return response.status(201).json(team);
+        return response
+          .status(201)
+          .json(`Changed ${team} team's titles to ${titles}`);
       }
     })
     .catch(error => {
@@ -245,7 +260,7 @@ app.delete("/api/v1/teams/:team_id", (request, response) => {
             .del()
             .then(team => {
               if (team === 0) {
-                return response.status(404).json(team);
+                return response.status(404).json(`Team not found`);
               }
               return response
                 .status(201)
@@ -356,7 +371,9 @@ app.get("/api/v1/races/drivers/:driver_id", (request, response) => {
       if (races.length >= 1) {
         return response.status(201).json(races);
       } else {
-        return response.status(204).json(races);
+        return response
+          .status(204)
+          .json(`Driver ${driver_id} has not won any races`);
       }
     })
     .catch(error => {
