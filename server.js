@@ -1,5 +1,6 @@
 const bodyParser = require("body-parser");
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const environment = process.env.NODE_ENV || "development";
 const configuration = require("./knexfile")[environment];
@@ -9,7 +10,7 @@ app.locals.title = "BYOBE Database";
 app.locals.drivers = [];
 app.locals.teams = [];
 
-app.use(bodyParser.json());
+app.use(bodyParser.json(), cors);
 app.use(express.static("public"));
 
 app.set("port", process.env.PORT || 3000);
