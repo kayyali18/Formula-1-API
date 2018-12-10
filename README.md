@@ -14,4 +14,16 @@ For those new to Node, the following tutorial will help get you up to speed with
 ### Get it
 If you're planning on contributing code to the project (which we welcome [LOVE](CONTRIBUTING.md)), it is best practice to begin by forking this repo using the `Fork` button in the top-right corner of this screen. You should then be able to use `git clone` to copy your fork onto your local machine.
     
-      git clone https://github.com/kayyali18/node-backend-server
+      git clone https://github.com/kayyali18/Formula-1-API
+     
+Jump into your new local copy of the F1 API:
+
+    cd Formula-1-API
+
+And then add an `upstream` remote that points to the main repo:
+
+    git remote add upstream https://github.com/kayyali18/Formula-1-API
+
+Fetch the latest version of `master` from `upstream` (ie. the main repo):
+
+    git fetch upstream master
