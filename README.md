@@ -27,3 +27,24 @@ And then add an `upstream` remote that points to the main repo:
 Fetch the latest version of `master` from `upstream` (ie. the main repo):
 
     git fetch upstream master
+
+### Get it running
+
+First, you need to create the database user the app will use by runnning some scripts that should do it for you:
+
+```
+npm run setup
+```
+
+This will create the "f1" user as superuser and allowing it to create databases. If this command fails, check the [troubleshooting section](#creating-the-database) for an alternative.
+
+Once done, run `npm run database`. If the script succeeds you're ready to start developing. If not, take a look at the output as it should be informative enough to help you troubleshoot.
+
+If you run into any other issues getting your local environment up and running please consult [the wiki][wiki].
+
+If still you get stuck do not hesitate to open an issue reporting the full output of the script.
+
+Now, your dreams of spinning up an API can be realised, start it up by:
+
+    npm run start
+
