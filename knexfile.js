@@ -30,7 +30,7 @@ module.exports = {
     debug: true,
     connection: DB_URL,
     migrations: {
-      tableName: "./db/migrations"
+      directory: "./db/migrations"
     },
     ssl: true,
     useNullAsDefault: true
