@@ -4,7 +4,9 @@
   "description": "A back-end server built using node",
   "main": "server.js",
   "scripts": {
-    "test": "NODE_ENV=test mocha --exit"
+    "test": "NODE_ENV=test mocha --exit",
+    "setup": "sudo -u postgres psql -c 'CREATE USER f1 WITH SUPERUSER CREATEDB --no-password'",
+    "database": "psql -c 'CREATE DATABASE formula_1'"
   },
   "repository": {
     "type": "git",
