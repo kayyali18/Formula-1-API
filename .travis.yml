@@ -1,4 +1,11 @@
 language: node_js
+deploy:
+  provider: kayyali18
+  on:
+    repo: my-org/my-repo
+    branches:    # ← new!
+      only:      # ← new!
+        - master # ← new!
 node_js:
   - node
 services:
