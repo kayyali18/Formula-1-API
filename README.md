@@ -111,7 +111,25 @@ Succesful Response:
 
 Error Response:
 
-- Code (404), Content ('Driver not found')
+- Code (404), Content('Driver not found')
+
+#### URL - `api/v1/drivers/team/:team_id`
+
+Method(s):
+
+- `GET`
+
+Allows users to filter drivers by their team id
+
+URL Params - Requires the id number of the team.
+
+Succesful Response:
+
+- Code(201), Content(Array of drivers)
+
+Erro Response:
+
+- Code(404), Content('No drivers found with team id <team_id>)
 
 ### TEAMS
 
@@ -240,3 +258,23 @@ Succesful Response:
 Error Response:
 
 - Code(404), Content(Race not found)
+
+#### URL - api/race/drivers/:driver_id
+
+Method(s)
+
+- `GET`
+
+Allows users to filter races by winning driver ids.
+
+URL Params:
+
+- driver_id
+
+Succesful Response:
+
+- Code(201), Content(array of races)
+
+Error Response:
+
+- Code(204), Content(no races found)
