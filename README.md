@@ -30,17 +30,19 @@ Fetch the latest version of `master` from `upstream` (ie. the main repo):
 
 ### Get it running
 
-First, you need to create the database user the app will use by runnning some scripts that should do it for you:
+First, you need to create the database user the app will use by runnning a scripts that should do it for you:
 
 ```
-npm run setup
+npm run database
 ```
 
-This will create the "f1" user as superuser and allowing it to create databases. If this command fails, check the [troubleshooting section](#creating-the-database) for an alternative.
+This will create the tables formula_1 and formula_1_test, respectively. If this command fails, check the [troubleshooting section](#creating-the-database) for an alternative.
 
-Once done, run `npm run database`. If the script succeeds you're ready to start developing. If not, take a look at the output as it should be informative enough to help you troubleshoot.
+Once done, if the script succeeds you're ready to start developing. If not, enter the following manually into the terminal:
 
-If you run into any other issues getting your local environment up and running please consult [the wiki][wiki].
+```
+psql -c 'CREATE DATABASE formula_1' && psql -c 'CREATE DATABASE formula_1_test'
+```
 
 If still you get stuck do not hesitate to open an issue reporting the full output of the script.
 
