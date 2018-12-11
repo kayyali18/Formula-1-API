@@ -27,6 +27,10 @@ And then add an `upstream` remote that points to the main repo:
 Fetch the latest version of `master` from `upstream` (ie. the main repo):
 
     git fetch upstream master
+    
+Make sure to install dependencies by running:
+
+    npm install
 
 ### Get it running
 
@@ -49,4 +53,36 @@ If still you get stuck do not hesitate to open an issue reporting the full outpu
 Now, your dreams of spinning up an API can be realised, start it up by:
 
     npm run start
+    
+    
+### Testing
+
+Make sure you have Mocha (testing suite) and Chai (assertion library) installed:
+
+    npm install -g mocha
+    npm install -g chai
+
+Tests, both unit and integration, are available. To run the test suite, the databse must be prepared, you can do so by typing:
+    
+    npm run seed
+
+Then the tests can be run with:
+
+    npm test
+    
+    
+### Troubleshooting
+
+Below are fixes to potential issues that can happen during the installation process. If these don't solve the problem, or it's not listed, feel free to reach out to the Developers @kayyali18 and @relasine. We usually respond pretty quickly.
+
+#### Creating the database
+
+If the `npm run database` command doesn't work, you can run the following commands instead:
+```
+$ createuser --superuser --no-password [YourName]
+$ createdb formula_1 --owner=[YourName]
+$ createdb formula_1_test --owner=[YourName]
+```
+If these commands succeed, you should be able to [continue the setup process](#get-it-running).
+
 
