@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "NODE_ENV=test mocha --exit",
-    "database": "psql -c 'CREATE DATABASE formula_1' && psql -c 'CREATE DATABASE formula_1_test'"
+    "database": "psql -c 'CREATE DATABASE formula_1' && psql -c 'CREATE DATABASE formula_1_test'",
+    "seed": "NODE_ENV=test knex migrate:latest && NODE_ENV=test knex seed:run"
   },
   "repository": {
     "type": "git",
