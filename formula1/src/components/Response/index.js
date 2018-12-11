@@ -1,11 +1,11 @@
 import React from 'react';
 import responses from '../../utils/responses';
 
-const Response = ({name}) => {
+const Response = ({name, clicked}) => {
     const matchingEndpoint = responses[name];
     let printableText = JSON.stringify(matchingEndpoint);
     return (
-        <div>
+        <div className={clicked ? 'show' : 'hide'}>
             {printableText}
         </div>
     )

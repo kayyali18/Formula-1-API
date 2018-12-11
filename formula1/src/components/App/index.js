@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import endpoints from '../../utils/data';
-import Response from '../Response';
 import Endpoint from '../API-endpoint';
 import './App.css';
 
@@ -10,8 +9,7 @@ class App extends Component {
     const endpointAddress = endpoints.map((address, i) => {
       return (
         <div key={Date.now() * i}>
-          <Endpoint name={address} key={Date.now() + i}/>
-          <Response name={address} key={i}/>
+          <Endpoint name={address} key={Date.now() + i} />
         </div>
       )
     })

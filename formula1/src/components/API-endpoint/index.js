@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import './API-endpoint.css'
+import Response from '../Response';
+import './API-endpoint.css';
 
 class Endpoint extends Component {
     constructor(props){
@@ -8,15 +9,21 @@ class Endpoint extends Component {
             clicked: false
         }
     }
+
+    showHide = () => {
+        this.setState({clicked: !this.state.clicked})
+    }
+
     render() {
         return(
             <div className='endpoint-container'>
                 <h2>
                     {this.props.name}
                 </h2>
-                <button className='show-btn'>
-                    Show Endopoint
+                <button onClick={this.showHide} className='show-btn'>
+                    Show Response/Example
                 </button>
+                <Response clicked={this.state.clicked} name={this.props.name}/>
             </div>
         )
     }
