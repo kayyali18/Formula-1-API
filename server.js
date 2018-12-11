@@ -10,7 +10,7 @@ app.locals.title = "BYOBE Database";
 app.locals.drivers = [];
 app.locals.teams = [];
 
-app.use(bodyParser.json(), cors);
+app.use(bodyParser.json(), cors());
 app.use(express.static("public"));
 
 app.set("port", process.env.PORT || 3000);
