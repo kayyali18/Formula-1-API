@@ -1,5 +1,5 @@
 const responses = {
-"/api/v1/drivers": [
+"GET /api/v1/drivers": [
     {
         "id": 1,
         "name": "Vettel",
@@ -181,7 +181,7 @@ const responses = {
         "updated_at": "2018-12-10T23:42:23.626Z"
     }
 ],
-    "/api/v1/drivers/:driver_id/team": [
+    "PATCH /api/v1/drivers/:driver_id/team": [
         {'example-endpoint': "/api/v1/drivers/1/team"},
         {'submitted-value': 2},
     {
@@ -194,7 +194,7 @@ const responses = {
         "updated_at": "2018-12-10T23:42:23.605Z"
     }
 ],
-    "/api/v1/drivers/team/:team_id": [
+    "GET /api/v1/drivers/team/:team_id": [
         {'example-endpoint': "/api/v1/drivers/team/4"},
         {
             "id": 7,
@@ -215,7 +215,7 @@ const responses = {
             "updated_at": "2018-12-10T23:42:23.613Z"
         }
 ],
-    "/api/v1/drivers/:driver_id/points": [
+    "PATCH /api/v1/drivers/:driver_id/points": [
         {'example-endpoint': "/api/v1/drivers/3/points"},
         {"submitted-value": 500},
         {
@@ -228,7 +228,7 @@ const responses = {
             "updated_at": "2018-12-10T23:42:23.603Z"
         }
     ],
-    "/api/v1/team/:team_id/drivers": [
+    "POST /api/v1/team/:team_id/drivers": [
         {'example-endpoint': "/api/v1/team/10/drivers"},
         {'submitted-value':     
             {
@@ -247,11 +247,11 @@ const responses = {
             "updated_at": "2018-12-11T21:05:07.010Z"
         }
     ],
-    "/api/v1/drivers/:driver_id": [
+    "DELETE /api/v1/drivers/:driver_id": [
         {'example-endpoint': "/api/v1/drivers/21"},
         {"respose confirmation":"Deleted 1 driver with id #21"}
     ],
-    "/api/v1/teams": [
+    "GET /api/v1/teams": [
         {
             "id": 1,
             "name": "Mercedes",
@@ -333,7 +333,7 @@ const responses = {
             "updated_at": "2018-12-10T23:42:23.600Z"
         }
     ],
-    "/api/v1/teams/:team_id/podiums": [
+    "PATCH /api/v1/teams/:team_id/podiums": [
         {'example-endpoint': "/api/v1/teams/6/podiums"},
         {"submitted-value": 69},
         {
@@ -345,7 +345,7 @@ const responses = {
             "updated_at": "2018-12-10T23:42:23.595Z"
         },
     ],
-    "/api/v1/teams/:team_id/titles": [
+    "PATCH /api/v1/teams/:team_id/titles": [
         {'example-endpoint': "/api/v1/teams/7/titles"},
         {"submitted-value": 4},
         {
@@ -357,7 +357,7 @@ const responses = {
             "updated_at": "2018-12-10T23:42:23.597Z"
         } 
     ],
-    "/api/v1/teams": [
+    "POST /api/v1/teams": [
         {'submitted-value': 'fast-guys'},
         {
             "id": 11,
@@ -368,11 +368,11 @@ const responses = {
             "updated_at": "2018-12-11T21:14:04.281Z"
         }
     ],
-    "/api/v1/teams/:team_id": [
+    "DELETE /api/v1/teams/:team_id": [
         {'example-endpoint': "/api/v1/teams/11"},
         {'response-confirmation': "Succesfully deleted 1 team"}
     ],
-    "/api/v1/races": [
+    "GET /api/v1/races": [
         {
             "id": 1,
             "name": "Azerbaijan",
@@ -626,7 +626,7 @@ const responses = {
             "continent": "North America"
         }
     ],
-    "/api/v1/races": [
+    "POST /api/v1/races": [
         {"submitted-value": {
             "name": "doug mcfast",
             "date": "19 Jul 2018",
@@ -650,11 +650,11 @@ const responses = {
             "continent": "Asia"
         }
     ],
-    "/api/v1/race/:country": [
+    "DELETE /api/v1/race/:country": [
         {'example-endpoint': "/api/v1/race/Germany"},
         {'response confirmation': 'Success'}
     ],
-    "/api/v1/races/drivers/:driver_id": [
+    "GET /api/v1/races/drivers/:driver_id": [
         {'example-endpoint': "/api/v1/races/drivers/5"},
         {
             "id": 21,

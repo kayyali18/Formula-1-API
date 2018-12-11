@@ -1,10 +1,12 @@
-import React, {Component} from 'react';
+import React from 'react';
 import responses from '../../utils/responses';
 
-const Response = (props) => {
+const Response = ({name}) => {
+    const matchingEndpoint = responses[name];
+    let printableText = JSON.stringify(matchingEndpoint);
     return (
         <div>
-            {props}
+            {printableText}
         </div>
     )
 }
