@@ -398,6 +398,40 @@ describe("Server file", () => {
           });
       });
     });
+
+    describe("/api/v1/races/:team_id", () => {
+      it("should return 200 status and return all applicable races on successful GET request", (done) => {
+        chai
+          .request(app)
+          .get("/api/v1/races/2")
+          .end((error, response) => {
+            expect(response).to.have.status(200);
+            expect(response.body.length).to.equal(6); //THIS SHOULD EVALUATE THE RESPONSE OBJECT
+            expect(response.body[0].id).to.be.a("number");
+            expect(response.body[1].name).to.be.a("string");
+            expect(response.body[2].date).to.be.a("string");
+            expect(response.body[3].winner_id).to.be.a("number");
+            expect(response.body[4].winning_team_id).to.be.a("number");
+            expect(response.body[5].laps).to.be.a("number");
+            expect(response.body[0].fastest_lap).to.be.a("string");
+            expect(response.body[1].created_at).to.be.a("string");
+            expect(response.body[2].updated_at).to.be.a("string");
+            expect(response.body[3].continent).to.be.a("string");
+            done();
+          });
+      });
+
+      it("Should return a status of 404 and error message on unsuccessful GET request", (done) => {
+        chai
+          .request(app)
+          .get("/api/v1/races/22")
+          .end((error, response) => {
+            expect(response).to.have.status(404);
+            expect(response.body).to.equal('Team #22 not found.');
+            done();
+          });
+      });
+    });
   });
 
   describe("Team endpoints", () => {
