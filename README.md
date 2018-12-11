@@ -34,7 +34,7 @@ Make sure to install dependencies by running:
 
 ### Get it running
 
-First, you need to create the database user the app will use by runnning a scripts that should do it for you:
+First, you need to create the database user the app will use by runnning a script that should do it for you:
 
 ```
 npm run database
