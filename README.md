@@ -12,7 +12,7 @@ If you are likely to need to manage multiple version of node on your local machi
 For those new to Node, the following tutorial will help get you up to speed with configuring a [Node environment](https://nodejs.org/en/docs/guides/getting-started-guide/).
 
 ### Get it
-If you're planning on contributing code to the project (which we welcome [LOVE](CONTRIBUTING.md)), it is best practice to begin by forking this repo using the `Fork` button in the top-right corner of this screen. You should then be able to use `git clone` to copy your fork onto your local machine.
+If you're planning on contributing code to the project (which we [WELCOME](CONTRIBUTING.md)), it is best practice to begin by forking this repo using the `Fork` button in the top-right corner of this screen. You should then be able to use `git clone` to copy your fork onto your local machine.
     
       git clone https://github.com/kayyali18/Formula-1-API
      
