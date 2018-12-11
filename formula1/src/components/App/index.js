@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import endpoints from '../../utils/data';
-import Endpoint from '../API-endpoint'
+import Endpoint from '../API-endpoint';
 import './App.css';
 
 class App extends Component {
   render() {
 
     const endpointAddress = endpoints.map(address => {
-      return <Endpoint name={address} />
+      return 
+        <div>
+          <Endpoint name={address} />
+          <Response ref={address} />
+        </div>
     })
 
     return (
