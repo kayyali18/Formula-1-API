@@ -21,7 +21,7 @@ Example: `Create new migration adding a championship column to the driver table`
 - Use the GitHub UI to make pull requests.
 - Write tests for new features including for all conditional paths and function calls.
 - Make sure all existing tests all pass before making a pull request.
-- As with commits, keep all pul requests small and focused.
+- As with commits, keep all pull requests small and focused.
 - Maintain a clean commit history.
 - Use style consistent with the rest of the codebase.
 - Before submitting a pull request, make sure to merge or rebase work with the master branch.
