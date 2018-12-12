@@ -2,7 +2,7 @@
 
 ### Setup
 
-Before you can contribute to this project, you need to have it pulled down locally. Instructions on getting it setup can be found [here](https://github.com/kayyali18/node-backend-server/README.md).
+Before you can contribute to this project, you need to have it pulled down locally. Instructions on getting it setup can be found [here](README.md).
 
 ### Making Commits
 
