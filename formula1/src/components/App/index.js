@@ -8,7 +8,7 @@ class App extends Component {
 
     const endpointAddress = endpoints.map((address, i) => {
       return (
-        <div key={Date.now() * i}>
+        <div className="endpoint-title" key={Date.now() * i}>
           <Endpoint name={address} key={Date.now() + i} />
         </div>
       )

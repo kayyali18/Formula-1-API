@@ -17,13 +17,15 @@ class Endpoint extends Component {
     render() {
         return(
             <div className='endpoint-container'>
+              <div className="title-container">
                 <h2>
                     {this.props.name}
                 </h2>
                 <button onClick={this.showHide} className='show-btn'>
                     Show Response/Example
                 </button>
-                <Response clicked={this.state.clicked} name={this.props.name}/>
+              </div>
+              <Response clicked={this.state.clicked} name={this.props.name}/>
             </div>
         )
     }
