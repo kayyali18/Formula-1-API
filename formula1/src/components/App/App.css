@@ -1,0 +1,17 @@
+.App {
+  text-align: center;
+}
+
+.endpoint-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.endpoint-title {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 80%;
+}

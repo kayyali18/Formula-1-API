@@ -10,8 +10,8 @@ app.locals.title = "BYOBE Database";
 app.locals.drivers = [];
 app.locals.teams = [];
 
-app.use(bodyParser.json(), cors);
-app.use(express.static("public"));
+app.use(bodyParser.json(), cors());
+app.use(express.static("./formula1/build"));
 
 app.set("port", process.env.PORT || 3000);
 
@@ -342,6 +342,21 @@ app.post("/api/v1/races", (request, response) => {
     .catch(error => {
       return response.status(500).json({ error });
     });
+});
+
+app.get("/api/v1/races/:team_id", (request, response) => {
+  const { team_id } = request.params
+
+  database("races")
+    .where("winning_team_id", team_id)
+    .select()
+    .then(races => {
+      if (races.length) {
+        return response.status(200).json(races)
+      } else {
+        return response.status(404).json(`Team #${team_id} not found.`)
+      }
+    })
 });
 
 app.delete("/api/v1/race/:country", (request, response) => {

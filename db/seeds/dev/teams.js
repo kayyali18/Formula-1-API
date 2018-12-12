@@ -38,7 +38,8 @@ const addDriver = (knex, driver, team_id) => {
         name: driver.name,
         points: driver.points,
         country: driver.nationality,
-        team_id: team_id[0]
+        team_id: team_id[0],
+        driver_number: driver.driver_number
       },
       "id"
     )
