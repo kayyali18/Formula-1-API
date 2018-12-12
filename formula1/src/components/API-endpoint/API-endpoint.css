@@ -7,10 +7,21 @@
 }
 
 .show-btn {
-    height: 50px;
+    font-weight: 700;
+    height: 67.8125px;
+}
+
+.show-btn:active {
+    background-color: red;
+    color: #fff;
+}
+
+.show-btn:focus {
+    outline: none;
 }
 
 .title-container {
+    align-items: center;
     display: flex;
     justify-content: space-between;
     width: 100%;

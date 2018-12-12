@@ -19,6 +19,8 @@ class App extends Component {
         <header className="App-header">
           <h1>Formula 1 API</h1>
         </header>
+        <p>This is the Formula 1 API.</p>
+        <p>This page is for developer to explore the endpoints and get examples of the responses returned.</p>
         <div className='endpoint-list' >
           {endpointAddress}
         </div>
