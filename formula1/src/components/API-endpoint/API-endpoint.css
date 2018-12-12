@@ -1,10 +1,17 @@
 .endpoint-container {
     display: inline-flex;
+    flex-direction: column;
     margin: 25px;
-    justify-content: space-around;
-    width: 40%;
+    justify-content: space-between;
+    width: 70%;
 }
 
 .show-btn {
     height: 50px;
+}
+
+.title-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
