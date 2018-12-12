@@ -10,5 +10,8 @@
 }
 
 .endpoint-title {
+  align-items: center;
+  display: flex;
+  justify-content: center;
   width: 80%;
 }
