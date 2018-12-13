@@ -7,6 +7,9 @@
 }
 
 .show-btn {
+    background-color: #fff;
+    border-radius: 8px;
+    font-family: 'Exo', sans-serif;
     font-weight: 700;
     height: 67.8125px;
 }
@@ -22,6 +25,7 @@
 
 .title-container {
     align-items: center;
+    background-color: rgba(211, 211, 211, 0.5);
     display: flex;
     justify-content: space-between;
     width: 100%;

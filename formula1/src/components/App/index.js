@@ -21,8 +21,10 @@ class App extends Component {
           <img src={f1logo} alt="f1 logo" className="f1-logo" />
           <h1 className="api-title" >FORMULA 1 API</h1>
         </header>
-        <p>This is the Formula 1 API.</p>
-        <p>This page is for developer to explore the endpoints and get examples of the responses returned.</p>
+        <div className="subtitle-container">
+          <p>This is the Formula 1 API.</p>
+          <p>This page is for developer to explore the endpoints and get examples of the responses returned.</p>
+        </div>
         <div className='endpoint-list' >
           {endpointAddress}
         </div>

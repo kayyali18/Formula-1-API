@@ -3,7 +3,7 @@
 }
 
 .App {
-  background-color: red;
+  background-image: url('../../utils/Images/f1-wallpaper.jpg');
   text-align: center;
 }
 
@@ -15,18 +15,36 @@
 }
 
 .endpoint-title {
-  width: 80%;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .f1-logo {
+  border: solid 2px #fff;
   border-radius: 26px 8px;
   height: 50px;
   margin-right: 50px;
   width: 200px;
 }
 
+.subtitle-container {
+  background-color: rgba(211, 211, 211, 0.5);
+  border-bottom: solid 4px red;
+  border-left: solid 4px red;
+  border-right: solid 4px red;
+  font-family: 'Exo', sans-serif;
+  margin: auto;
+  padding-bottom: 10px;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-top: 10px;
+  width: 636px;
+}
+
 .title-box {
   align-items: center;
+  background-color: red;
   display: flex;
   justify-content: center;
 }
