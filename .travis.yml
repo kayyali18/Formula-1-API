@@ -1,11 +1,4 @@
 language: node_js
-deploy:
-  provider: kayyali18
-  on:
-    repo: /kayyali18/Formula-1-API
-    branches:    # ← new!
-      only:      # ← new!
-        - master # ← new!
 node_js:
   - node
 services:
@@ -15,8 +8,8 @@ before_script:
 notifications:
   email: false
 deploy:
+  provider: heroku
   api_key:
     secure: Dg7Vx0N1xdTJEFVAF090U3baOMDBB9HV4LrpK8+OiAfU3oHyjYS2/XRB45a5LJ+z5J4F0ZNEghZdYJn6uuqlCx3vvKgeOKeAcQ1cZ0WuD5WEapfXbJ+0qRKldJFbnciz48KWxy/glyCvRs8Q6YHl5xfrb5dgfcaP9ZXqUlPbdBNC2nChT8en+wVhpgmMGps05WhJjypdAk6TpFsnoHS3jNnMFxHNGqvTq6Jnb0HY3bCp5fDatanq8LzoChhHp+zlaUCPbrlk1clmvOQbFJnHXwh0g2bFSAMtzyXDWrSW/QIbVwwaXEOREjFi8rVJ8p25USIPUESLrguCrTE8zfjkm+eVBJBQw4T7Z4z32J8XXIT76sCX7hzYhxIJa2HCNEgh3iJz5OJaIm9OHkhECVaCqyzL0oP8OzlvA6/2JWeuDr/xQxBKqpy7KDpelLg376UGTk1yr2VBDeqo6LfsMm1HwsuuDIrA2lx2n4OdpCLf03q7DZUB4WJsN1YdreB0WVUEtIWlLJUm95IYuWiBRJ3QuMSGaFipzmTUzUzy7KFNwNHzDEXN963SpNZ7L0RKSTFn7JlSv+/LiWDYu1y+W5tsaiq9ZY1DO43MbhdTd7EBUwqQmNrbkNyWjW35cblfjm+wuFvrrRQjwpsYhzohM4Q+4oeGr7jaGWLWos+t8udYwIc=
   app: formula-1-api
   skip_cleanup: true
-
