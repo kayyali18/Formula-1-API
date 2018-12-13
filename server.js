@@ -11,7 +11,7 @@ app.locals.drivers = [];
 app.locals.teams = [];
 
 app.use(bodyParser.json(), cors());
-app.use(express.static("public"));
+app.use(express.static("./formula1/build"));
 
 app.set("port", process.env.PORT || 3000);
 

@@ -401,24 +401,35 @@ describe("Server file", () => {
 
     describe("/api/v1/races/:team_id", () => {
       it("should return 200 status and return all applicable races on successful GET request", (done) => {
-        chai
+
+        chai 
           .request(app)
-          .get("/api/v1/races/2")
-          .end((error, response) => {
-            expect(response).to.have.status(200);
-            expect(response.body.length).to.equal(6); //THIS SHOULD EVALUATE THE RESPONSE OBJECT
-            expect(response.body[0].id).to.be.a("number");
-            expect(response.body[1].name).to.be.a("string");
-            expect(response.body[2].date).to.be.a("string");
-            expect(response.body[3].winner_id).to.be.a("number");
-            expect(response.body[4].winning_team_id).to.be.a("number");
-            expect(response.body[5].laps).to.be.a("number");
-            expect(response.body[0].fastest_lap).to.be.a("string");
-            expect(response.body[1].created_at).to.be.a("string");
-            expect(response.body[2].updated_at).to.be.a("string");
-            expect(response.body[3].continent).to.be.a("string");
-            done();
-          });
+          .get('/api/v1/teams')
+          .then(response => {
+            const mercedes = response.body.find(team => team.name === 'Mercedes')
+          })
+          done()
+          .then( id => {
+            chai
+            .request(app)
+            .get(`/api/v1/races/$${id}`)
+            .end((error, response) => {
+              expect(response).to.have.status(200);
+              expect(response.body.length).to.equal(6); //THIS SHOULD EVALUATE THE RESPONSE OBJECT
+              expect(response.body[0].id).to.be.a("number");
+              expect(response.body[1].name).to.be.a("string");
+              expect(response.body[2].date).to.be.a("string");
+              expect(response.body[3].winner_id).to.be.a("number");
+              expect(response.body[4].winning_team_id).to.be.a("number");
+              expect(response.body[5].laps).to.be.a("number");
+              expect(response.body[0].fastest_lap).to.be.a("string");
+              expect(response.body[1].created_at).to.be.a("string");
+              expect(response.body[2].updated_at).to.be.a("string");
+              expect(response.body[3].continent).to.be.a("string");
+              done();
+            });
+          })
+        
       });
 
       it("Should return a status of 404 and error message on unsuccessful GET request", (done) => {

@@ -5,6 +5,7 @@ const fullSet = [
         name: "Hamilton",
         points: "408",
         nationality: "GBR",
+        driver_number: "#44",
         wonRaces: [
           {
             name: "Azerbaijan",
@@ -85,7 +86,7 @@ const fullSet = [
           }
         ]
       },
-      { name: "Bottas", points: "247", nationality: "FIN", wonRaces: [] }
+      { name: "Bottas", points: "247", nationality: "FIN", driver_number: "#77", wonRaces: []}
     ],
     podiums: "162",
     titles: "5",
@@ -97,6 +98,7 @@ const fullSet = [
         name: "Vettel",
         points: "320",
         nationality: "GER",
+        driver_number: "#5",
         wonRaces: [
           {
             name: "Australia",
@@ -133,12 +135,13 @@ const fullSet = [
             date: "26 Aug 2018",
             continent: "Europe"
           }
-        ]
+        ],
       },
       {
         name: "Räikkönen",
         points: "251",
         nationality: "FIN",
+        driver_number: "#7",
         wonRaces: [
           {
             name: "United States",
@@ -147,7 +150,7 @@ const fullSet = [
             date: "21 Oct 2018",
             continent: "North America"
           }
-        ]
+        ],
       }
     ],
     podiums: "763",
@@ -160,6 +163,7 @@ const fullSet = [
         name: "Ricciardo",
         points: "170",
         nationality: "AUS",
+        driver_number: '#3',
         wonRaces: [
           {
             name: "China",
@@ -175,12 +179,13 @@ const fullSet = [
             date: "27 May 2018",
             continent: "Europe"
           }
-        ]
+        ],
       },
       {
         name: "Verstappen",
         points: "249",
         nationality: "NED",
+        driver_number: "#3",
         wonRaces: [
           {
             name: "Austria",
@@ -196,7 +201,7 @@ const fullSet = [
             date: "28 Oct 2018",
             continent: "North America"
           }
-        ]
+        ],
       }
     ],
     podiums: "161",
@@ -205,8 +210,8 @@ const fullSet = [
   },
   {
     drivers: [
-      { name: "Hulkenberg", points: "69", nationality: "GER", wonRaces: [] },
-      { name: "Sainz", points: "53", nationality: "ESP", wonRaces: [] }
+      { name: "Hulkenberg", points: "69", nationality: "GER", driver_number: "#7", wonRaces: []},
+      { name: "Sainz", points: "53", nationality: "ESP", driver_number: "#55", wonRaces: []}
     ],
     podiums: "59",
     titles: "2",
@@ -214,8 +219,8 @@ const fullSet = [
   },
   {
     drivers: [
-      { name: "Grosjean", points: "37", nationality: "FRA", wonRaces: [] },
-      { name: "Magnussen", points: "56", nationality: "DEN", wonRaces: [] }
+      { name: "Grosjean", points: "37", nationality: "FRA",  driver_number: "#8",  wonRaces: []},
+      { name: "Magnussen", points: "56", nationality: "DEN", driver_number: "#20", wonRaces: [] }
     ],
     podiums: "0",
     titles: "0",
@@ -223,8 +228,8 @@ const fullSet = [
   },
   {
     drivers: [
-      { name: "Alonso", points: "50", nationality: "ESP", wonRaces: [] },
-      { name: "Vandoorne", points: "12", nationality: "BEL", wonRaces: [] }
+      { name: "Alonso", points: "50", nationality: "ESP", driver_number: "#14", wonRaces: [] },
+      { name: "Vandoorne", points: "12", nationality: "BEL", driver_number: "#2", wonRaces: []}
     ],
     podiums: "485",
     titles: "8",
@@ -232,8 +237,8 @@ const fullSet = [
   },
   {
     drivers: [
-      { name: "Perez", points: "62", nationality: "MEX", wonRaces: [] },
-      { name: "Ocon", points: "49", nationality: "FRA", wonRaces: [] }
+      { name: "Perez", points: "62", nationality: "MEX", driver_number: "#11", wonRaces: [] },
+      { name: "Ocon", points: "49", nationality: "FRA", driver_number: "#31", wonRaces: [] }
     ],
     podiums: "0",
     titles: "0",
@@ -241,8 +246,8 @@ const fullSet = [
   },
   {
     drivers: [
-      { name: "Ericsson", points: "9", nationality: "SWE", wonRaces: [] },
-      { name: "Leclerc", points: "39", nationality: "MON", wonRaces: [] }
+      { name: "Ericsson", points: "9", nationality: "SWE", driver_number: "#9", wonRaces: [] },
+      { name: "Leclerc", points: "39", nationality: "MON", driver_number: "#16", wonRaces: [] }
     ],
     podiums: "27",
     titles: "0",
@@ -250,8 +255,8 @@ const fullSet = [
   },
   {
     drivers: [
-      { name: "Gasly", points: "29", nationality: "FRA", wonRaces: [] },
-      { name: "Hartley", points: "4", nationality: "NZL", wonRaces: [] }
+      { name: "Gasly", points: "29", nationality: "FRA", driver_number: "#10", wonRaces: [] },
+      { name: "Hartley", points: "4", nationality: "NZL", driver_number: "#10", wonRaces: [] }
     ],
     podiums: "1",
     titles: "0",
@@ -259,8 +264,8 @@ const fullSet = [
   },
   {
     drivers: [
-      { name: "Stroll", points: "6", nationality: "CAN", wonRaces: [] },
-      { name: "Sirotkin", points: "1", nationality: "RUS", wonRaces: [] }
+      { name: "Stroll", points: "6", nationality: "CAN", driver_number: "#18", wonRaces: [] },
+      { name: "Sirotkin", points: "1", nationality: "RUS", driver_number: "#35", wonRaces: [] }
     ],
     podiums: "311",
     titles: "9",

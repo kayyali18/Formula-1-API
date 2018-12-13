@@ -1,10 +1,35 @@
 .endpoint-container {
     display: inline-flex;
+    flex-direction: column;
     margin: 25px;
-    justify-content: space-around;
-    width: 40%;
+    justify-content: space-between;
+    width: 70%;
 }
 
 .show-btn {
-    height: 50px;
+    background-color: #fff;
+    border-radius: 8px;
+    font-family: 'Exo', sans-serif;
+    font-weight: 700;
+    height: 67.8125px;
+}
+
+.show-btn:active {
+    background-color: red;
+    color: #fff;
+}
+
+.show-btn:focus {
+    outline: none;
+}
+
+.title-container {
+    align-items: center;
+    background-color: rgba(211, 211, 211, 0.5);
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    border: 3px solid red;
+    padding: 10px;
+    font-family: 'Orbitron', sans-serif;
 }

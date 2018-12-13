@@ -1,13 +1,13 @@
 import React from 'react';
 import responses from '../../utils/responses';
-import './Response.css'
+import './Response.css';
+import JSONPretty from 'react-json-pretty';
 
 const Response = ({name, clicked}) => {
     const matchingEndpoint = responses[name];
-    let printableText = JSON.stringify(matchingEndpoint);
     return (
         <div className={clicked ? 'show' : 'hide' }>
-            {printableText}
+            <JSONPretty id="json-pretty" json={matchingEndpoint}></JSONPretty>
         </div>
     )
 }
