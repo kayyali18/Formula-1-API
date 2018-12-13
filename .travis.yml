@@ -2,7 +2,7 @@ language: node_js
 deploy:
   provider: kayyali18
   on:
-    repo: my-org/my-repo
+    repo: /kayyali18/Formula-1-API
     branches:    # ← new!
       only:      # ← new!
         - master # ← new!
