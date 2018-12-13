@@ -345,18 +345,18 @@ app.post("/api/v1/races", (request, response) => {
 });
 
 app.get("/api/v1/races/:team_id", (request, response) => {
-  const { team_id } = request.params
+  const { team_id } = request.params;
 
   database("races")
     .where("winning_team_id", team_id)
     .select()
     .then(races => {
       if (races.length) {
-        return response.status(200).json(races)
+        return response.status(200).json(races);
       } else {
-        return response.status(404).json(`Team #${team_id} not found.`)
+        return response.status(404).json(`Team #${team_id} not found.`);
       }
-    })
+    });
 });
 
 app.delete("/api/v1/race/:country", (request, response) => {
