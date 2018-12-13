@@ -1,4 +1,9 @@
+.api-title {
+  font-family: 'Exo', sans-serif;
+}
+
 .App {
+  background-color: red;
   text-align: center;
 }
 
@@ -10,8 +15,18 @@
 }
 
 .endpoint-title {
+  width: 80%;
+}
+
+.f1-logo {
+  border-radius: 26px 8px;
+  height: 50px;
+  margin-right: 50px;
+  width: 200px;
+}
+
+.title-box {
   align-items: center;
   display: flex;
   justify-content: center;
-  width: 80%;
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import endpoints from '../../utils/data';
 import Endpoint from '../API-endpoint';
+import f1logo from '../../utils/Images/f1_logo.png';
 import './App.css';
 
 class App extends Component {
@@ -16,8 +17,9 @@ class App extends Component {
 
     return (
       <div className="App">
-        <header className="App-header">
-          <h1>Formula 1 API</h1>
+        <header className="title-box">
+          <img src={f1logo} alt="f1 logo" className="f1-logo" />
+          <h1 className="api-title" >FORMULA 1 API</h1>
         </header>
         <p>This is the Formula 1 API.</p>
         <p>This page is for developer to explore the endpoints and get examples of the responses returned.</p>
